@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public bool Jumping = false;
     private Animator playerAnimator;
     private bool dontCheckIfGrounded = false;
+    public bool canMove = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
         speed += speedAdd;
         rb.velocity = new Vector2(speed, rb.velocity.y);
         
+        if(!canMove) return;
         //Check if the player is grounded
         CheckIfGrounded();
 
