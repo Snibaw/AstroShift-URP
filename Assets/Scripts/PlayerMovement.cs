@@ -39,15 +39,19 @@ public class PlayerMovement : MonoBehaviour
             
             dontCheckIfGrounded = true;
             Invoke("FlipSprite",0.2f);
-            if(isGrounded) 
-            {
-                JumpAnimation();
-                // Invoke("FlipSprite", 0.5f);
-            }
+            // if(isGrounded) 
+            // {
+            //     JumpAnimation();
+            //    // Invoke("FlipSprite", 0.5f);
+            // }
             // else
             // {
             //     FlipSprite();
             // }
+        }
+        if(!isGrounded && !Jumping)
+        {
+            JumpAnimation();
         }
     }
 

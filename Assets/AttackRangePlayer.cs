@@ -31,19 +31,10 @@ public class AttackRangePlayer : MonoBehaviour
             playerAttack.Attack();
         }
     }
-    public void AnimationLastObjectCollidedWith()
+    public void HitSuspendedWallAnimation()
     {
         //"Animation"
-        foreach(Rigidbody2D rb2D in objectParentCollidedWith.GetComponentsInChildren<Rigidbody2D>())
-        {
-            rb2D.gravityScale = 1;
-            //Add random force to every object
-            rb2D.AddForce(new Vector2(Random.Range(-5f,5f),Random.Range(-5f,5f)),ForceMode2D.Impulse);
-            //Add force to make them rotate
-            rb2D.AddTorque(Random.Range(-2f,2f),ForceMode2D.Impulse);
-            Destroy(rb2D.gameObject, 1.5f);
-        }
-
+        StartCoroutine(AnimateHitSuspendedWall());
 
         //Light
         GameObject lightObject = Instantiate(lightPrefab, objectParentCollidedWith.transform.position, Quaternion.identity);
@@ -72,6 +63,20 @@ public class AttackRangePlayer : MonoBehaviour
             light.pointLightOuterRadius = current;
             yield return new WaitForSeconds(lightRangeTime);
         }        
+    }
+    private IEnumerator AnimateHitSuspendedWall()
+    {
+        yield return new WaitForSeconds(0.25f);
+        foreach(Rigidbody2D rb2D in objectParentCollidedWith.GetComponentsInChildren<Rigidbody2D>())
+        {
+            rb2D.constraints = RigidbodyConstraints2D.None;
+            rb2D.gravityScale = 1;
+            //Add random force to every object
+            rb2D.AddForce(new Vector2(Random.Range(-5f,5f),Random.Range(-5f,5f)),ForceMode2D.Impulse);
+            //Add force to make them rotate
+            rb2D.AddTorque(Random.Range(-2f,2f),ForceMode2D.Impulse);
+            Destroy(rb2D.gameObject, 1.5f);
+        }
     }
     private void FadeAwayObjectsCollidedWith()
     {
