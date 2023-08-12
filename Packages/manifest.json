@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.elringus.spriteglow": "https://github.com/Elringus/SpriteGlow.git#package",
     "com.unity.collab-proxy": "2.0.0",
     "com.unity.feature.2d": "1.0.0",
     "com.unity.ide.rider": "3.0.18",

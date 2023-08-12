@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 5808679861725743930}
   - component: {fileID: 5808679861725743929}
   - component: {fileID: 5808679861725743941}
+  - component: {fileID: 7961701754612702974}
   m_Layer: 0
   m_Name: chain_samples
   m_TagString: Chain
@@ -189,6 +190,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &7961701754612702974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7422720817043633038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8f6d3c6e4250e84192f5b34ce9e71bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  glowColor: {r: 1, g: 1, b: 1, a: 1}
+  glowBrightness: 2
+  outlineWidth: 1
+  alphaThreshold: 0.01
+  drawOutside: 0
+  enableInstancing: 0
 --- !u!1 &9215383851631251747
 GameObject:
   m_ObjectHideFlags: 0
