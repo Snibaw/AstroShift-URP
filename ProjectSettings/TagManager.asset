@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Obstacle
   - Chain
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -13,8 +14,8 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
-  - 
+  - Post Processing
+  - GlowingEffect
   - 
   - 
   - 
@@ -40,6 +41,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: BackGround
+    uniqueID: 791315815
+    locked: 0
+  - name: Decor
+    uniqueID: 143495573
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

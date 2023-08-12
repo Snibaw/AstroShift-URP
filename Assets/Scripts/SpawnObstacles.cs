@@ -11,6 +11,7 @@ public class SpawnObstacles : MonoBehaviour
     [SerializeField] private GameObject squarePrefab;
     [SerializeField] private float squareMinDistance = 10f;
     [SerializeField] private float squareMaxDistance = 20f;
+    [SerializeField] private float squareStartingXPosition = 0f;
     [SerializeField] private float[] possibleYPositions;
     private Vector3 squareSpawnPosition;
     private float distanceSinceLastSquare = 0;
@@ -45,9 +46,9 @@ public class SpawnObstacles : MonoBehaviour
 
     private void SpawnSuspendedWall()
     {
-        if(mainCameraPos.position.x >= suspendedWallStartingXPosition)
-        {
-            if(distanceSinceLastSuspendedWall >= suspendedWallMinDistance)
+        if(mainCameraPos.position.x < suspendedWallStartingXPosition) return;
+
+        if(distanceSinceLastSuspendedWall >= suspendedWallMinDistance)
             {
                 int indexWall = Random.Range(0, suspendedWallPrefab.Length);
                 suspendedWallSpawnPosition = new Vector3(mainCameraPos.position.x + Random.Range(suspendedWallMinDistance, suspendedWallMaxDistance), 0, 0);
@@ -56,10 +57,11 @@ public class SpawnObstacles : MonoBehaviour
                 cameraPosWhenLastSuspendedWallSpawned = mainCameraPos.position;
             }
             distanceSinceLastSuspendedWall = mainCameraPos.position.x - cameraPosWhenLastSuspendedWallSpawned.x;
-        }
     }
     private void SpawnSquare()
     {
+        if(mainCameraPos.position.x < squareStartingXPosition) return;
+        
         if(distanceSinceLastSquare >= squareMinDistance)
         {
             int indexYPosition = DetermineYPositionSquare();

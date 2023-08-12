@@ -75,7 +75,7 @@ public class AttackRangePlayer : MonoBehaviour
             rb2D.AddForce(new Vector2(Random.Range(-5f,5f),Random.Range(-5f,5f)),ForceMode2D.Impulse);
             //Add force to make them rotate
             rb2D.AddTorque(Random.Range(-2f,2f),ForceMode2D.Impulse);
-            Destroy(rb2D.gameObject, 1.5f);
+            Destroy(rb2D.gameObject, 2.5f);
         }
     }
     private void FadeAwayObjectsCollidedWith()
