@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public float speed = 5f;
     public float speedAdd = 0.01f;
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     public bool isGrounded = false;
     public bool Jumping = false;
     private Animator playerAnimator;

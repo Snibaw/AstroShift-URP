@@ -33,6 +33,8 @@ public class PlayerAttack : MonoBehaviour
     }
     private IEnumerator AttackCoroutine(bool doSlowMotion = true)
     {
+        float gravityScaleTempo = playerMovement.rb.gravityScale;
+        playerMovement.rb.gravityScale = 0;
         if(doSlowMotion)
         {
             playerMovement.speed /= 2;
@@ -56,6 +58,7 @@ public class PlayerAttack : MonoBehaviour
             Destroy(attackHit, 0.5f);
             
         }
+        playerMovement.rb.gravityScale = gravityScaleTempo;
         
         
 
