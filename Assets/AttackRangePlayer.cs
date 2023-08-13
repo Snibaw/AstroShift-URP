@@ -28,7 +28,12 @@ public class AttackRangePlayer : MonoBehaviour
                 return;
             }
             objectParentCollidedWith = collision.gameObject.transform.parent.gameObject;
-            playerAttack.Attack();
+            playerAttack.Attack(collision.gameObject);
+        }
+        if(collision.gameObject.CompareTag("Drone"))
+        {
+            objectParentCollidedWith = collision.gameObject;
+            playerAttack.Attack(collision.gameObject);
         }
     }
     public void HitSuspendedWallAnimation()

@@ -9,6 +9,9 @@ public class DroneBehaviour : MonoBehaviour
     private SpriteGlow.SpriteGlowEffect spriteGlow;
     [SerializeField] private float movementSpeed = 0.01f;
     private Animator droneAnimator;
+    private Transform camPos;
+    private Rigidbody2D rb;
+    private CircleCollider2D circleCollider2D;
 
     [Header("Shooting")]
     [SerializeField] private float sightRange = 0.5f;
@@ -18,27 +21,67 @@ public class DroneBehaviour : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletSpeed = 10f;
     [SerializeField] private float timeInFrontOfPlayerBeforeShooting = 0.5f;
+    [SerializeField] private float offsetBtwDroneAndCamera = 7f;
+    [SerializeField] private float offsetStartBtwDroneAndCamera = 12f;
+    [SerializeField] private float timeBeforeLeavingScreen = 15f;
     private float timeInFrontOfPlayerBeforeShootingTempo;
     private float timeBtwShootTempo;
+    private bool isStarting = true;
+    private bool isLeaving = false;
+    private bool isDead = false;
     // Start is called before the first frame update
     void Start()
     {
         playerPos = GameObject.Find("Player").transform;
+        camPos = Camera.main.transform;
         spriteGlow = GetComponent<SpriteGlow.SpriteGlowEffect>();
-        spriteGlow.GlowColor = glowColors[0];
+        spriteGlow.GlowColor = new Color(0,0,0,0);
 
         droneAnimator = GetComponent<Animator>();
-        timeBtwShootTempo = timeBtwShoot;
+        timeBtwShootTempo = 0;
         timeInFrontOfPlayerBeforeShootingTempo = timeInFrontOfPlayerBeforeShooting;
+
+        transform.position = new Vector3(camPos.position.x + offsetStartBtwDroneAndCamera, Random.Range(-3.5f,3.5f), transform.position.z);
+        Invoke("StartLeaving", timeBeforeLeavingScreen);
+
+        rb = GetComponent<Rigidbody2D>();
+        rb.isKinematic = true;
+
+        circleCollider2D = GetComponent<CircleCollider2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(isDead) return;
+        if(isLeaving)
+        {
+            transform.position = new Vector3(transform.position.x - 0.03f, transform.position.y, transform.position.z);
+            return;
+        }
+
+        if(isStarting) 
+        {
+            transform.position = new Vector3(Mathf.Lerp(transform.position.x, camPos.position.x + offsetBtwDroneAndCamera, movementSpeed/1.5f), transform.position.y, transform.position.z);
+
+            if(transform.position.x > camPos.position.x + offsetBtwDroneAndCamera - 0.1f && transform.position.x < camPos.position.x + offsetBtwDroneAndCamera + 0.1f)
+            {
+                isStarting = false;
+                spriteGlow.GlowColor = glowColors[0];
+            }
+            return;
+        }
+
+
         if(!isShooting) FollowPlayerYAxis();
         CheckIfPlayerIsInSight();
 
         timeBtwShootTempo -= Time.deltaTime;
+    }
+    private void StartLeaving()
+    {
+        isLeaving = true; 
+        spriteGlow.GlowColor = new Color(0,0,0,0);
     }
     private void FollowPlayerYAxis()
     {
@@ -88,5 +131,15 @@ public class DroneBehaviour : MonoBehaviour
     {
         GameObject bullet = Instantiate(bulletPrefab, transform.position - new Vector3(0.5f,0,0), Quaternion.identity);
         bullet.GetComponent<DroneBulletBehaviour>().speed = bulletSpeed;
+    }
+    public void Die()
+    {
+        if(isDead) return;
+        isDead = true;
+        droneAnimator.SetTrigger("Die");
+        rb.isKinematic = false;
+        circleCollider2D.isTrigger = false;
+        rb.AddForce(new Vector2(Random.Range(3f,5f),0),ForceMode2D.Impulse);
+        Destroy(gameObject, 2f);
     }
 }

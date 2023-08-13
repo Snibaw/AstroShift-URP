@@ -20,18 +20,32 @@ public class PlayerAttack : MonoBehaviour
     {
         
     }
-    public void Attack()
+    public void Attack(GameObject target)
     {
-        if(playerMovement.canMove == false)
-        {
-            return;
-        }
+        if(playerMovement.canMove == false) return;
 
         playerMovement.canMove = false;
         playerAnim.SetTrigger("Attack");
-        StartCoroutine(AttackCoroutine(Random.Range(0,4)==0));
+        if(target.tag == "Chain")
+        {
+            StartCoroutine(AttackChainCoroutine(Random.Range(0,4)==0));
+        }
+        else if(target.tag == "Drone")
+        {
+            StartCoroutine(AttackDroneCoroutine(target));
+        }
+        
     }
-    private IEnumerator AttackCoroutine(bool doSlowMotion = true)
+    private IEnumerator AttackDroneCoroutine(GameObject target)
+    {
+        playerMovement.canMove = true;
+        yield return new WaitForSeconds(0.20f);
+        GameObject attackHit = Instantiate(attackHitPrefab, transform.position + new Vector3(0.5f,0,0), Quaternion.identity);
+        Destroy(attackHit, 0.5f);
+
+        target.GetComponent<DroneBehaviour>().Die();
+    }
+    private IEnumerator AttackChainCoroutine(bool doSlowMotion = true)
     {
         float gravityScaleTempo = playerMovement.rb.gravityScale;
         playerMovement.rb.gravityScale = 0;
@@ -59,8 +73,5 @@ public class PlayerAttack : MonoBehaviour
             
         }
         playerMovement.rb.gravityScale = gravityScaleTempo;
-        
-        
-
     }
 }

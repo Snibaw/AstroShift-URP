@@ -7,6 +7,7 @@ TagManager:
   - Obstacle
   - Chain
   - FxTemporaire
+  - Drone
   layers:
   - Default
   - TransparentFX

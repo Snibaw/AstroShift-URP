@@ -27,6 +27,16 @@ public class SpawnObstacles : MonoBehaviour
     private float distanceSinceLastSuspendedWall = 0;
     private Vector3 cameraPosWhenLastSuspendedWallSpawned;
 
+    [Header("------------------------")]
+    [Header("Drone")]
+    [SerializeField] private GameObject dronePrefab;
+    [SerializeField] private float droneMinDistance = 100f;
+    [SerializeField] private float droneMaxDistance = 200f;
+    [SerializeField] private float droneStartingXPosition = 0f;
+    private Vector3 droneSpawnPosition;
+    private float distanceSinceLastDrone = 0;
+    private Vector3 cameraPosWhenLastDroneSpawned;
+
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +45,7 @@ public class SpawnObstacles : MonoBehaviour
         mainCameraPos = Camera.main.transform;
         distanceSinceLastSquare = squareMinDistance;
         distanceSinceLastSuspendedWall = suspendedWallMinDistance;
+        distanceSinceLastDrone = droneMinDistance;
     }
 
     // Update is called once per frame
@@ -42,8 +53,30 @@ public class SpawnObstacles : MonoBehaviour
     {
         SpawnSquare();
         SpawnSuspendedWall();
+        SpawnDrone();
     }
+    private void SpawnDrone()
+    {
+        if(mainCameraPos.position.x < droneStartingXPosition) return;
 
+        if(distanceSinceLastDrone >= droneMinDistance)
+        {
+            int numberOfDrones = Random.Range(1, 4);
+            StartCoroutine(SpawnDronesWithDelay(numberOfDrones));
+            cameraPosWhenLastDroneSpawned = mainCameraPos.position;
+        }
+    }
+    private IEnumerator SpawnDronesWithDelay(int numberOfDrones)
+    {
+        for(int i = 0; i < numberOfDrones; i++)
+        {
+            droneSpawnPosition = new Vector3(mainCameraPos.position.x, 0, 0);
+            GameObject drone = Instantiate(dronePrefab, droneSpawnPosition, Quaternion.identity);
+            drone.transform.parent = transform;
+            distanceSinceLastDrone = mainCameraPos.position.x - cameraPosWhenLastDroneSpawned.x;
+            yield return new WaitForSeconds(Random.Range(1f, 3f));
+        }
+    }
     private void SpawnSuspendedWall()
     {
         if(mainCameraPos.position.x < suspendedWallStartingXPosition) return;

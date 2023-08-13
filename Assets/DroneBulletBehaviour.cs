@@ -22,9 +22,12 @@ public class DroneBulletBehaviour : MonoBehaviour
         {
             Debug.Log("Player hit");
         }
-        bulletAnimator.SetTrigger("Hit");
-        speed = 0;
-        Destroy(gameObject, 1f);
+        if(other.CompareTag("Player") || other.CompareTag("Chain") || other.CompareTag("Obstacle"))
+        {
+            bulletAnimator.SetTrigger("Hit");
+            speed = 0;
+            Destroy(gameObject, 1f);
+        }
         
     }
 }
