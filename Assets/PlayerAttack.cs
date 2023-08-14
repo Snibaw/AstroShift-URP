@@ -23,7 +23,8 @@ public class PlayerAttack : MonoBehaviour
         playerAnim.SetTrigger("Attack");
         if(target.tag == "Chain")
         {
-            StartCoroutine(AttackChainCoroutine(Random.Range(0,4)==0));
+            // StartCoroutine(AttackChainCoroutine(Random.Range(0,4)==0));
+            StartCoroutine(AttackChainCoroutine(false));
         }
         else if(target.tag == "Drone")
         {
@@ -39,7 +40,7 @@ public class PlayerAttack : MonoBehaviour
 
         target.GetComponent<DroneBehaviour>().Die();
     }
-    private IEnumerator AttackChainCoroutine(bool doSlowMotion = true)
+    private IEnumerator AttackChainCoroutine(bool doSlowMotion = false)
     {
 
         if(doSlowMotion)

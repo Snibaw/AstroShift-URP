@@ -15,4 +15,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("Game Over");
         Destroy(GameObject.Find("Player"));
     }
+    public void EarnCoin()
+    {
+        Debug.Log("Coin Earned");
+    }
 }

@@ -43,7 +43,7 @@ public class DroneBehaviour : MonoBehaviour
         timeInFrontOfPlayerBeforeShootingTempo = timeInFrontOfPlayerBeforeShooting;
 
         transform.position = new Vector3(camPos.position.x + offsetStartBtwDroneAndCamera, Random.Range(-3.5f,3.5f), transform.position.z);
-        Invoke("StartLeaving", timeBeforeLeavingScreen);
+        StartCoroutine(StartLeavingCoroutine());
 
         rb = GetComponent<Rigidbody2D>();
         rb.isKinematic = true;
@@ -63,7 +63,7 @@ public class DroneBehaviour : MonoBehaviour
 
         if(isStarting) 
         {
-            transform.position = new Vector3(Mathf.Lerp(transform.position.x, camPos.position.x + offsetBtwDroneAndCamera, movementSpeed/1.5f), transform.position.y, transform.position.z);
+            transform.position = new Vector3(Mathf.Lerp(transform.position.x, camPos.position.x + offsetBtwDroneAndCamera, movementSpeed), transform.position.y, transform.position.z);
 
             if(transform.position.x > camPos.position.x + offsetBtwDroneAndCamera - 0.1f && transform.position.x < camPos.position.x + offsetBtwDroneAndCamera + 0.1f)
             {
@@ -79,8 +79,9 @@ public class DroneBehaviour : MonoBehaviour
 
         timeBtwShootTempo -= Time.deltaTime;
     }
-    private void StartLeaving()
+    private IEnumerator StartLeavingCoroutine()
     {
+        yield return new WaitForSeconds(timeBeforeLeavingScreen);
         isLeaving = true; 
         spriteGlow.GlowBrightness = 1;
         spriteGlow.GlowColor = endGlowColor;
@@ -140,8 +141,8 @@ public class DroneBehaviour : MonoBehaviour
         isDead = true;
         droneAnimator.SetTrigger("Die");
         rb.isKinematic = false;
+        gameObject.transform.parent = null;
         circleCollider2D.isTrigger = false;
-        rb.AddForce(new Vector2(Random.Range(3f,5f),0),ForceMode2D.Impulse);
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, 1.5f);
     }
 }

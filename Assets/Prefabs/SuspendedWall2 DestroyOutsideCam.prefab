@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5037999499833949971}
   - component: {fileID: 3208743396773079419}
   - component: {fileID: 8502515038763283434}
+  - component: {fileID: 1439544323409914232}
   m_Layer: 0
   m_Name: Triangle
   m_TagString: Untagged
@@ -166,6 +167,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d17b0eac6b586b34abf30134a91dcf42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &1439544323409914232
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507414188950139667}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1642400588050624149
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,6 +197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7240135396322598090}
+  - component: {fileID: 4402666072494489436}
   m_Layer: 0
   m_Name: SquareGroup
   m_TagString: Obstacle
@@ -199,9 +222,29 @@ Transform:
   - {fileID: 1679933659612246795}
   - {fileID: 774934886538283290}
   - {fileID: 3096348041987313006}
+  - {fileID: 4999748010369332921}
   m_Father: {fileID: 6441432508803184801}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4402666072494489436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642400588050624149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a345dd178c4b2a746886ae0f43f2b056, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSuspended: 1
+  coinPrefab:
+  - {fileID: 4386189673200041420, guid: c1f74192a10ebf0499eb0897f4bd123f, type: 3}
+  - {fileID: 3401377605452348087, guid: b87d89fde95b5314d88ce4b9165d9418, type: 3}
+  coinTransformY:
+  - 2.7
+  - 0.3
 --- !u!1 &5471833925394834768
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +278,6 @@ Transform:
   - {fileID: 7240135396322598090}
   - {fileID: 1288855887603826896}
   - {fileID: 8310327372953161729}
-  - {fileID: 4999748010369332921}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -300,6 +342,7 @@ GameObject:
   - component: {fileID: 8401185054509533319}
   - component: {fileID: 2669093464401846698}
   - component: {fileID: 372932935128597525}
+  - component: {fileID: 307598935827911908}
   m_Layer: 0
   m_Name: Triangle (1)
   m_TagString: Untagged
@@ -315,12 +358,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5765485143695949924}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -0.98, y: -0.653, z: 0}
-  m_LocalScale: {x: 0.81757003, y: 0.70421994, z: 1}
+  m_LocalPosition: {x: -0.975, y: 1.099, z: 0}
+  m_LocalScale: {x: 0.8175701, y: 0.7042199, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6441432508803184801}
-  m_RootOrder: 3
+  m_Father: {fileID: 7240135396322598090}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!212 &1458552235299387972
 SpriteRenderer:
@@ -452,6 +495,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d17b0eac6b586b34abf30134a91dcf42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &307598935827911908
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5765485143695949924}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1001 &1432368388012793219
 PrefabInstance:
   m_ObjectHideFlags: 0
