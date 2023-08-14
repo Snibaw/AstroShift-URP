@@ -20,7 +20,7 @@ public class DroneBulletBehaviour : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            Debug.Log("Player hit");
+            GameObject.Find("GameManager").GetComponent<GameManager>().GameOver();
         }
         if(other.CompareTag("Player") || other.CompareTag("Chain") || other.CompareTag("Obstacle"))
         {

@@ -140,13 +140,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isShooting: 0
-  movementSpeed: 0.01
+  movementSpeed: 0.001
   sightRange: 0.5
   glowColors:
   - {r: 0.30980393, g: 0.99607843, b: 0.99607843, a: 1}
   - {r: 1, g: 0.9315591, b: 0, a: 1}
   - {r: 1, g: 0.48472303, b: 0, a: 1}
   - {r: 1, g: 0.019385792, b: 0, a: 1}
+  endGlowColor: {r: 1, g: 1, b: 1, a: 1}
   timeBtwShootColorChange: 0.2
   timeBtwShoot: 2
   bulletPrefab: {fileID: 5269243197701211261, guid: d98e10220a9da524c9fe56a795ed2739, type: 3}
@@ -154,7 +155,10 @@ MonoBehaviour:
   timeInFrontOfPlayerBeforeShooting: 1
   offsetBtwDroneAndCamera: 7
   offsetStartBtwDroneAndCamera: 12
-  timeBeforeLeavingScreen: 5
+  timeBeforeLeavingScreen: 15
+  isStarting: 1
+  isLeaving: 0
+  isDead: 0
 --- !u!58 &3901540647815690892
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -183,7 +187,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.01
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1

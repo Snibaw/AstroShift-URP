@@ -15,7 +15,7 @@ public class KillBorder : MonoBehaviour
     {
         if(other.gameObject.name == "Player")
             gameManager.GameOver();
-        else if(other.gameObject.tag == "Obstacle")
+        else if(other.gameObject.tag == "Obstacle"|| other.gameObject.tag == "Chain" || other.gameObject.tag == "Drone")
             Destroy(other.gameObject,2f);
             
     }

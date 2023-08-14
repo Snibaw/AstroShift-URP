@@ -65,6 +65,7 @@ public class SpawnObstacles : MonoBehaviour
             StartCoroutine(SpawnDronesWithDelay(numberOfDrones));
             cameraPosWhenLastDroneSpawned = mainCameraPos.position;
         }
+        distanceSinceLastDrone = mainCameraPos.position.x - cameraPosWhenLastDroneSpawned.x;
     }
     private IEnumerator SpawnDronesWithDelay(int numberOfDrones)
     {
@@ -72,8 +73,7 @@ public class SpawnObstacles : MonoBehaviour
         {
             droneSpawnPosition = new Vector3(mainCameraPos.position.x, 0, 0);
             GameObject drone = Instantiate(dronePrefab, droneSpawnPosition, Quaternion.identity);
-            drone.transform.parent = transform;
-            distanceSinceLastDrone = mainCameraPos.position.x - cameraPosWhenLastDroneSpawned.x;
+            drone.transform.parent = mainCameraPos.transform;
             yield return new WaitForSeconds(Random.Range(1f, 3f));
         }
     }

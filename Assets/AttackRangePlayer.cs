@@ -32,6 +32,10 @@ public class AttackRangePlayer : MonoBehaviour
         }
         if(collision.gameObject.CompareTag("Drone"))
         {
+            if(collision.gameObject == objectParentCollidedWith)
+            {
+                return;
+            }
             objectParentCollidedWith = collision.gameObject;
             playerAttack.Attack(collision.gameObject);
         }

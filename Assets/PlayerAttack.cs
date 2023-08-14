@@ -6,6 +6,7 @@ public class PlayerAttack : MonoBehaviour
 {
     private Animator playerAnim;
     private PlayerMovement playerMovement;
+    private bool isAttacking = false;
     [SerializeField] private GameObject attackHitPrefab;
     [SerializeField] private AttackRangePlayer attackRangePlayer;
     // Start is called before the first frame update
@@ -16,15 +17,9 @@ public class PlayerAttack : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void Attack(GameObject target)
     {
-        if(playerMovement.canMove == false) return;
-
-        playerMovement.canMove = false;
+        if(isAttacking) return;
         playerAnim.SetTrigger("Attack");
         if(target.tag == "Chain")
         {
@@ -38,7 +33,6 @@ public class PlayerAttack : MonoBehaviour
     }
     private IEnumerator AttackDroneCoroutine(GameObject target)
     {
-        playerMovement.canMove = true;
         yield return new WaitForSeconds(0.20f);
         GameObject attackHit = Instantiate(attackHitPrefab, transform.position + new Vector3(0.5f,0,0), Quaternion.identity);
         Destroy(attackHit, 0.5f);
@@ -47,10 +41,11 @@ public class PlayerAttack : MonoBehaviour
     }
     private IEnumerator AttackChainCoroutine(bool doSlowMotion = true)
     {
-        float gravityScaleTempo = playerMovement.rb.gravityScale;
-        playerMovement.rb.gravityScale = 0;
+
         if(doSlowMotion)
         {
+            float gravityScaleTempo = playerMovement.rb.gravityScale;
+            playerMovement.rb.gravityScale = 0;
             playerMovement.speed /= 2;
             attackRangePlayer.HitSuspendedWallAnimation();
             yield return new WaitForSeconds(0.15f);
@@ -61,17 +56,16 @@ public class PlayerAttack : MonoBehaviour
             yield return new WaitForSeconds(0.15f);
             Time.timeScale = 1f;
             playerMovement.speed *= 2;
-            playerMovement.canMove = true;
+            playerMovement.rb.gravityScale = gravityScaleTempo;
         }
         else
         {
-            playerMovement.canMove = true;
             attackRangePlayer.HitSuspendedWallAnimation();
             yield return new WaitForSeconds(0.20f);
             GameObject attackHit = Instantiate(attackHitPrefab, transform.position + new Vector3(0.5f,0,0), Quaternion.identity);
             Destroy(attackHit, 0.5f);
             
         }
-        playerMovement.rb.gravityScale = gravityScaleTempo;
+        
     }
 }

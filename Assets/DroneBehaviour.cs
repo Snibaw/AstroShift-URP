@@ -16,6 +16,7 @@ public class DroneBehaviour : MonoBehaviour
     [Header("Shooting")]
     [SerializeField] private float sightRange = 0.5f;
     [SerializeField] private Color[] glowColors;
+    [SerializeField] private Color endGlowColor;
     [SerializeField] private float timeBtwShootColorChange = 0.5f;
     [SerializeField] private float timeBtwShoot = 3f;
     [SerializeField] private GameObject bulletPrefab;
@@ -26,9 +27,9 @@ public class DroneBehaviour : MonoBehaviour
     [SerializeField] private float timeBeforeLeavingScreen = 15f;
     private float timeInFrontOfPlayerBeforeShootingTempo;
     private float timeBtwShootTempo;
-    private bool isStarting = true;
-    private bool isLeaving = false;
-    private bool isDead = false;
+    public bool isStarting = true;
+    public bool isLeaving = false;
+    public bool isDead = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -81,7 +82,8 @@ public class DroneBehaviour : MonoBehaviour
     private void StartLeaving()
     {
         isLeaving = true; 
-        spriteGlow.GlowColor = new Color(0,0,0,0);
+        spriteGlow.GlowBrightness = 1;
+        spriteGlow.GlowColor = endGlowColor;
     }
     private void FollowPlayerYAxis()
     {

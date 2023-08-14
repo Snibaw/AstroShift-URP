@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4343459082846682115}
   m_Layer: 0
   m_Name: DroneBullet
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
