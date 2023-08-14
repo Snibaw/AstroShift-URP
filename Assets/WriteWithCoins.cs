@@ -4,21 +4,20 @@ using UnityEngine;
 
 public class WriteWithCoins : MonoBehaviour
 {
-    [SerializeField] private string word;
     [SerializeField] private GameObject[] coinPrefab;
     private float lengthOfALetter = 2f;
     [SerializeField] private float spaceBetweenLetters = 1f;
     [SerializeField] private float spaceBetweenWords = 2f;
     // Start is called before the first frame update
-    private void Start() {
-        // word = System.DateTime.Now.ToString("dd MM yyyy");
-        WriteWord();
-    }
-    public void WriteWord()
+    // private void Start() {
+    //     // word = System.DateTime.Now.ToString("dd MM yyyy");
+    //     WriteWord();
+    // }
+    public void WriteWord(string word, Vector3 position)
     {
-        float x = transform.position.x;
-        float y = transform.position.y;
-        float z = transform.position.z;
+        float x = position.x;
+        float y = position.y;
+        float z = position.z;
         for(int i = 0; i < word.Length; i++)
         {
             if(word[i] == ' ')
@@ -28,11 +27,14 @@ public class WriteWithCoins : MonoBehaviour
             }
             GameObject coin = Instantiate(coinPrefab[FindLetter(word[i])],new Vector3(x,y,z),Quaternion.identity);
             coin.transform.parent = transform;
-            x += lengthOfALetter + spaceBetweenLetters;
+            Destroy(coin, 15f);
+            if(word[i] == '!') x += 2*spaceBetweenLetters;
+            else x += lengthOfALetter + spaceBetweenLetters;
         }
     }
     private int FindLetter(char c)
     {
+        Debug.Log(c);
         foreach (var item in coinPrefab)
         {
             if(item.name[0] == c)

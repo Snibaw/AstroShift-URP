@@ -9,6 +9,7 @@ public class DroneBulletBehaviour : MonoBehaviour
 
     private void Start() {
         bulletAnimator = GetComponent<Animator>();
+        Destroy(gameObject, 5f);
     }
     // Update is called once per frame
     void Update()

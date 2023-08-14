@@ -7,6 +7,29 @@ public class SpawnObstacles : MonoBehaviour
     private Transform mainCameraPos;
     private Transform playerPos;
 
+    [Header("Phase")]
+    [SerializeField] private string[] possiblePhases;
+    [SerializeField] private float possiblePhaseDistance;
+    [SerializeField] private float phaseCoinDistance = 0f;
+    [SerializeField] private float phaseStartDistance = 0f;
+    [SerializeField] private float distanceBetweenPhases = 0f;
+    private float phaseDistance = 0f;
+    [SerializeField] private string currentPhase = "Start";
+    private float currentPhaseXPosition = 0f;
+    private int currentPhaseIndex = 0;
+    private bool isMessageDisplayed = false;
+    
+    [Header("------------------------")]
+    [Header("Start")]
+    [SerializeField] private string[] startMessages;
+    private WriteWithCoins writeWithCoins;
+
+    [Header("------------------------")]
+    [Header("Coin")]
+    [SerializeField] private string[] coinMessages;
+
+
+    [Header("------------------------")]
     [Header("Square")]
     [SerializeField] private GameObject squarePrefab;
     [SerializeField] private float squareMinDistance = 10f;
@@ -46,14 +69,71 @@ public class SpawnObstacles : MonoBehaviour
         distanceSinceLastSquare = squareMinDistance;
         distanceSinceLastSuspendedWall = suspendedWallMinDistance;
         distanceSinceLastDrone = droneMinDistance;
+
+        currentPhase = "Start";
+        currentPhaseXPosition = mainCameraPos.position.x;
+        phaseDistance = phaseStartDistance;
+
+        writeWithCoins = GameObject.Find("WriteWithCoins").GetComponent<WriteWithCoins>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        SpawnSquare();
-        SpawnSuspendedWall();
-        SpawnDrone();
+        if(mainCameraPos.position.x > currentPhaseXPosition + phaseDistance)
+        {
+            currentPhase = "Waiting";
+        }
+
+        switch (currentPhase)
+        {
+            case "Waiting":
+                if(mainCameraPos.position.x > currentPhaseXPosition + distanceBetweenPhases)
+                {
+                    ChangePhase();
+                }
+                break;
+            case "Start":
+                if(!isMessageDisplayed)
+                {
+                    writeWithCoins.WriteWord(startMessages[Random.Range(0, startMessages.Length)], new Vector3(mainCameraPos.position.x + 30f, 0, 0));
+                    isMessageDisplayed = true;
+                }
+                break;
+            case "Coin":
+                if(!isMessageDisplayed)
+                {
+                    writeWithCoins.WriteWord(coinMessages[Random.Range(0, coinMessages.Length)], new Vector3(mainCameraPos.position.x + 50f, 0, 0));
+                    isMessageDisplayed = true;
+                }
+                break;
+            case "Square":
+                SpawnSquare();
+                break;
+            case "SuspendedWall":
+                SpawnSuspendedWall();
+                SpawnSquare();
+                break;
+            case "Drone":
+                SpawnDrone();
+                break;
+            default:
+                break;
+
+        }
+    }
+    private void ChangePhase()
+    {
+        do
+        {
+            currentPhaseIndex = Random.Range(0, possiblePhases.Length);
+        } while (possiblePhases[currentPhaseIndex] == currentPhase);
+
+        isMessageDisplayed = false;
+        currentPhase = possiblePhases[currentPhaseIndex];
+        currentPhaseXPosition = mainCameraPos.position.x;
+        if(currentPhase != "Coin") phaseDistance = possiblePhaseDistance;
+        else phaseDistance = phaseCoinDistance;
     }
     private void SpawnDrone()
     {
@@ -61,7 +141,7 @@ public class SpawnObstacles : MonoBehaviour
 
         if(distanceSinceLastDrone >= droneMinDistance)
         {
-            int numberOfDrones = Random.Range(1, 4);
+            int numberOfDrones = 2;
             StartCoroutine(SpawnDronesWithDelay(numberOfDrones));
             cameraPosWhenLastDroneSpawned = mainCameraPos.position;
         }
