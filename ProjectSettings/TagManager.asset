@@ -8,6 +8,7 @@ TagManager:
   - Chain
   - FxTemporaire
   - Drone
+  - Coin
   layers:
   - Default
   - TransparentFX

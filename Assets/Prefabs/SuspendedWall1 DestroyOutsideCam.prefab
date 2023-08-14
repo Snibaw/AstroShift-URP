@@ -812,6 +812,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: chain_samples
       objectReference: {fileID: 0}
+    - target: {fileID: 5637434239000470656, guid: e5a39eeb8b179b34f8fde3d3fc0b80c4, type: 3}
+      propertyPath: outlineWidth
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5a39eeb8b179b34f8fde3d3fc0b80c4, type: 3}
 --- !u!4 &2469012657281722157 stripped

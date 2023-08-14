@@ -440,6 +440,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7549379423699041004}
     m_Modifications:
+    - target: {fileID: 2246806644367163877, guid: 12411312b3528df419a23ebdb8b1a04e, type: 3}
+      propertyPath: glowBrightness
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6673452480351428914, guid: 12411312b3528df419a23ebdb8b1a04e, type: 3}
       propertyPath: m_Mass
       value: 1
@@ -559,6 +563,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7549379423699041004}
     m_Modifications:
+    - target: {fileID: 2246806644367163877, guid: 12411312b3528df419a23ebdb8b1a04e, type: 3}
+      propertyPath: glowBrightness
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6673452480351428914, guid: 12411312b3528df419a23ebdb8b1a04e, type: 3}
       propertyPath: m_Mass
       value: 1
@@ -678,6 +686,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7549379423699041004}
     m_Modifications:
+    - target: {fileID: 2246806644367163877, guid: 12411312b3528df419a23ebdb8b1a04e, type: 3}
+      propertyPath: glowBrightness
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6673452480351428914, guid: 12411312b3528df419a23ebdb8b1a04e, type: 3}
       propertyPath: m_Mass
       value: 1
@@ -797,6 +809,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7549379423699041004}
     m_Modifications:
+    - target: {fileID: 2246806644367163877, guid: 12411312b3528df419a23ebdb8b1a04e, type: 3}
+      propertyPath: glowBrightness
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6673452480351428914, guid: 12411312b3528df419a23ebdb8b1a04e, type: 3}
       propertyPath: m_Mass
       value: 1
