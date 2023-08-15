@@ -61,6 +61,16 @@ public class SpawnObstacles : MonoBehaviour
     private float distanceSinceLastDrone = 0;
     private Vector3 cameraPosWhenLastDroneSpawned;
 
+    [Header("------------------------")]
+    [Header("Laser")]
+    [SerializeField] private GameObject laserPrefab;
+    [SerializeField] private float laserMinDistance = 25f;
+    [SerializeField] private float laserMaxDistance = 50f;
+    [SerializeField] private float laserStartingXPosition = 0f;
+    private Vector3 laserSpawnPosition;
+    private float distanceSinceLastLaser = 0;
+    private Vector3 cameraPosWhenLastLaserSpawned;
+
 
     // Start is called before the first frame update
     void Start()
@@ -70,10 +80,12 @@ public class SpawnObstacles : MonoBehaviour
         distanceSinceLastSquare = squareMinDistance;
         distanceSinceLastSuspendedWall = suspendedWallMinDistance;
         distanceSinceLastDrone = droneMinDistance;
+        distanceSinceLastLaser = laserMinDistance;
 
         currentPhase = startPhase;
         currentPhaseXPosition = mainCameraPos.position.x;
-        phaseDistance = phaseStartDistance;
+        if(currentPhase == "Start") phaseDistance = phaseStartDistance;
+        else phaseDistance = possiblePhaseDistance;
 
         writeWithCoins = GameObject.Find("WriteWithCoins").GetComponent<WriteWithCoins>();
     }
@@ -118,6 +130,9 @@ public class SpawnObstacles : MonoBehaviour
             case "Drone":
                 SpawnDrone();
                 break;
+            case "Laser":
+                SpawnLaser();
+                break;
             default:
                 break;
 
@@ -135,6 +150,19 @@ public class SpawnObstacles : MonoBehaviour
         currentPhaseXPosition = mainCameraPos.position.x;
         if(currentPhase != "Coin") phaseDistance = possiblePhaseDistance;
         else phaseDistance = phaseCoinDistance;
+    }
+    private void SpawnLaser()
+    {
+        if(mainCameraPos.position.x < laserStartingXPosition) return;
+
+        if(distanceSinceLastLaser >= laserMinDistance)
+        {
+            laserSpawnPosition = new Vector3(mainCameraPos.position.x + Random.Range(laserMinDistance, laserMaxDistance), 0, 0);
+            GameObject laser = Instantiate(laserPrefab, laserSpawnPosition, Quaternion.identity);
+            laser.transform.parent = transform;
+            cameraPosWhenLastLaserSpawned = mainCameraPos.position;
+        }
+        distanceSinceLastLaser = mainCameraPos.position.x - cameraPosWhenLastLaserSpawned.x;
     }
     private void SpawnDrone()
     {

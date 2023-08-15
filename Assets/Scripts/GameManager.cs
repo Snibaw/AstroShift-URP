@@ -6,12 +6,16 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject highScoreFlagPrefab;
+    [SerializeField] private GameObject[] removeWhenStart;
+    [SerializeField] private GameObject[] showWhenStart;
+    [SerializeField] private GameObject[] showWhenGameOver;
     private TMP_Text scoreText;
     private TMP_Text coinText;
     private TMP_Text highScoreText;
     private int highScore;
     private GameObject player;
     private int coin = 0;
+    private bool isStarted;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,9 +34,20 @@ public class GameManager : MonoBehaviour
         }
         
         player = GameObject.Find("Player");
+
+
+        foreach(GameObject obj in showWhenGameOver)
+        {
+            obj.SetActive(false);
+        }
+        foreach(GameObject obj in showWhenStart)
+        {
+            obj.SetActive(false);
+        }
+        isStarted = false;
     }
     private void Update() {
-        scoreText.text = player.transform.position.x.ToString("0");
+        if(isStarted) scoreText.text = player.transform.position.x.ToString("0");
     }
 
     public void GameOver()
@@ -42,11 +57,33 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("highScore", int.Parse(scoreText.text));
         }
         Time.timeScale = 0;
-        Destroy(player);
+        foreach(GameObject obj in showWhenGameOver)
+        {
+            obj.SetActive(true);
+        }
     }
     public void EarnCoin(int coinValue = 1)
     {
         coin += coinValue;
         coinText.text = coin.ToString();
+    }
+    public void StartGame()
+    {
+        isStarted = true;
+        foreach(GameObject obj in removeWhenStart)
+        {
+            obj.SetActive(false);
+        }
+        foreach(GameObject obj in showWhenStart)
+        {
+            obj.SetActive(true);
+        }
+        player.transform.position = new Vector3(0, -4f, 0);
+        Camera.main.transform.position = new Vector3(2, 0, -10);
+    }
+    public void RestartGame()
+    {
+        Time.timeScale = 1;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 }
