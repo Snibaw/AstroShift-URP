@@ -12,11 +12,14 @@ public class PlayerMovement : MonoBehaviour
     private Animator playerAnimator;
     private bool dontCheckIfGrounded = false;
     public bool canMove = true;
+    [SerializeField] private float antiRebondTimerMax = 0.01f;
+    private float antiRebondTimer;
     // Start is called before the first frame update
     void Start()
     {
         rb=GetComponent<Rigidbody2D>();
         playerAnimator = GetComponent<Animator>();
+        antiRebondTimer = antiRebondTimerMax;
     }
 
     // Update is called once per frame
@@ -32,8 +35,9 @@ public class PlayerMovement : MonoBehaviour
 
 
         //If the player press left click make the gravity change
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && antiRebondTimer <= 0)
         {
+            antiRebondTimer = antiRebondTimerMax;
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y/3);
             rb.gravityScale = -rb.gravityScale;
             
@@ -53,6 +57,8 @@ public class PlayerMovement : MonoBehaviour
         {
             JumpAnimation();
         }
+
+        antiRebondTimer -= Time.deltaTime;
     }
 
     private void CheckIfGrounded()

@@ -13,6 +13,7 @@ public class SpawnObstacles : MonoBehaviour
     [SerializeField] private float phaseCoinDistance = 0f;
     [SerializeField] private float phaseStartDistance = 0f;
     [SerializeField] private float distanceBetweenPhases = 0f;
+    [SerializeField] private string startPhase;
     private float phaseDistance = 0f;
     [SerializeField] private string currentPhase = "Start";
     private float currentPhaseXPosition = 0f;
@@ -70,7 +71,7 @@ public class SpawnObstacles : MonoBehaviour
         distanceSinceLastSuspendedWall = suspendedWallMinDistance;
         distanceSinceLastDrone = droneMinDistance;
 
-        currentPhase = "Start";
+        currentPhase = startPhase;
         currentPhaseXPosition = mainCameraPos.position.x;
         phaseDistance = phaseStartDistance;
 

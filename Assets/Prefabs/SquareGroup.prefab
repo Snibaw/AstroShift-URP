@@ -189,7 +189,7 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 0.5773587}
+    - - {x: 0.03953132, y: 0.1607829}
       - {x: -0.28483886, y: -0.27880064}
       - {x: 0.5, y: -0.28866667}
 --- !u!95 &776377421929883104
@@ -377,7 +377,7 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 0.5773587}
+    - - {x: -0.01438874, y: 0.1624065}
       - {x: -0.5, y: -0.28866667}
       - {x: 0.28408325, y: -0.2835216}
 --- !u!95 &7805413288400659701
@@ -515,6 +515,14 @@ PrefabInstance:
     - target: {fileID: 7845549547740953236, guid: 12411312b3528df419a23ebdb8b1a04e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7845549547740953237, guid: 12411312b3528df419a23ebdb8b1a04e, type: 3}
+      propertyPath: m_Size.y
+      value: 4.7918615
+      objectReference: {fileID: 0}
+    - target: {fileID: 7845549547740953237, guid: 12411312b3528df419a23ebdb8b1a04e, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.09748757
       objectReference: {fileID: 0}
     - target: {fileID: 7845549547740953238, guid: 12411312b3528df419a23ebdb8b1a04e, type: 3}
       propertyPath: m_Materials.Array.data[0]

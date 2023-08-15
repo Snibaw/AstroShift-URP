@@ -29,6 +29,7 @@ public class DroneBehaviour : MonoBehaviour
     private float timeBtwShootTempo;
     public bool isStarting = true;
     public bool isLeaving = false;
+    public bool prepareToLeave = false;
     public bool isDead = false;
     // Start is called before the first frame update
     void Start()
@@ -55,6 +56,16 @@ public class DroneBehaviour : MonoBehaviour
     void Update()
     {
         if(isDead) return;
+        if(prepareToLeave)
+        {
+            if(!isShooting) 
+            {
+                prepareToLeave = false;
+                isLeaving = true;
+                spriteGlow.GlowBrightness = 1;
+                spriteGlow.GlowColor = endGlowColor;
+            }
+        }
         if(isLeaving)
         {
             transform.position = new Vector3(transform.position.x - 0.03f, transform.position.y, transform.position.z);
@@ -63,7 +74,7 @@ public class DroneBehaviour : MonoBehaviour
 
         if(isStarting) 
         {
-            transform.position = new Vector3(Mathf.Lerp(transform.position.x, camPos.position.x + offsetBtwDroneAndCamera, movementSpeed), transform.position.y, transform.position.z);
+            transform.position = new Vector3(transform.position.x - 0.02f, transform.position.y, transform.position.z);
 
             if(transform.position.x > camPos.position.x + offsetBtwDroneAndCamera - 0.1f && transform.position.x < camPos.position.x + offsetBtwDroneAndCamera + 0.1f)
             {
@@ -82,9 +93,14 @@ public class DroneBehaviour : MonoBehaviour
     private IEnumerator StartLeavingCoroutine()
     {
         yield return new WaitForSeconds(timeBeforeLeavingScreen);
-        isLeaving = true; 
-        spriteGlow.GlowBrightness = 1;
-        spriteGlow.GlowColor = endGlowColor;
+        prepareToLeave = true; 
+        if(!isShooting) 
+        {
+            prepareToLeave = false;
+            isLeaving = true;
+            spriteGlow.GlowBrightness = 1;
+            spriteGlow.GlowColor = endGlowColor;
+        }
     }
     private void FollowPlayerYAxis()
     {

@@ -155,7 +155,7 @@ MonoBehaviour:
   timeInFrontOfPlayerBeforeShooting: 1
   offsetBtwDroneAndCamera: 7
   offsetStartBtwDroneAndCamera: 12
-  timeBeforeLeavingScreen: 10
+  timeBeforeLeavingScreen: 12
   isStarting: 1
   isLeaving: 0
   isDead: 0

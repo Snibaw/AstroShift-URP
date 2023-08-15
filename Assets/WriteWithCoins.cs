@@ -34,7 +34,6 @@ public class WriteWithCoins : MonoBehaviour
     }
     private int FindLetter(char c)
     {
-        Debug.Log(c);
         foreach (var item in coinPrefab)
         {
             if(item.name[0] == c)

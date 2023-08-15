@@ -78,6 +78,7 @@ public class AttackRangePlayer : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
         foreach(Rigidbody2D rb2D in objectParentCollidedWith.GetComponentsInChildren<Rigidbody2D>())
         {
+            Debug.Log(rb2D.gameObject.name);
             rb2D.constraints = RigidbodyConstraints2D.None;
             rb2D.gravityScale = 1;
             //Add random force to every object
