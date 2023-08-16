@@ -12,17 +12,24 @@ public class MonsterKillerBehaviour : MonoBehaviour
     private bool isDead;
     private Transform cameraPosition;
     public bool isTop = false;
+    private GameObject player;
+    private float speed;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
         timeBtwShootsTempo = 0;
         cameraPosition = Camera.main.transform;
+
+        player = GameObject.Find("Player");
+        speed = player.GetComponent<PlayerMovement>().speed/2 - 2;
     }
 
     // Update is called once per frame
     void Update()
     {
+        transform.position += Vector3.right * speed * Time.deltaTime;
+
         timeBtwShootsTempo -= Time.deltaTime;
         Shoot();
 

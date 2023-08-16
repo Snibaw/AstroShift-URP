@@ -87,6 +87,11 @@ public class AttackRangePlayer : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
         foreach(Rigidbody2D rb2D in objectParentCollidedWith.GetComponentsInChildren<Rigidbody2D>())
         {
+            if(rb2D.gameObject.CompareTag("ScoreMultiplier"))
+            {
+                Destroy(rb2D.gameObject,1f);
+                GameObject.Find("GameManager").GetComponent<GameManager>().PickScoreMultiplier  ();
+            }
             rb2D.constraints = RigidbodyConstraints2D.None;
             rb2D.gravityScale = 1;
             //Add random force to every object

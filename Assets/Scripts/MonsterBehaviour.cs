@@ -101,6 +101,8 @@ public class MonsterBehaviour : MonoBehaviour
     public void BecomeAngry()
     {
         if(isDead)  return;
+        if(isAngry) return;
+        heart.SetActive(false);
         isAngry = true;
         spriteGlow = GetComponent<SpriteGlow.SpriteGlowEffect>();
         spriteGlow.GlowColor = angryColor;

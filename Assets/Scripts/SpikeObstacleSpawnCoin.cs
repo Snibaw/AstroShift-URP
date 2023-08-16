@@ -7,9 +7,26 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
     public bool isSuspended = false;
     [SerializeField] private GameObject[] coinPrefab;
     [SerializeField] private float[] coinTransformY;
+    [SerializeField] private GameObject monsterScoreMultiplier;
+    [SerializeField] private float probabilityToSpawnMonsterScoreMultiplier;
+    public bool canSpawnMonsterScoreMultiplier = false;
     // Start is called before the first frame update
     void Start()
     {
+        if(canSpawnMonsterScoreMultiplier)
+        {
+            if(Random.Range(0,100) < probabilityToSpawnMonsterScoreMultiplier)
+            {
+                monsterScoreMultiplier.SetActive(true);
+            }
+            else
+            {
+                monsterScoreMultiplier.SetActive(false);
+            }
+        }
+            
+
+
         if(Random.Range(0,3) == 0)
             return;
         if(isSuspended)

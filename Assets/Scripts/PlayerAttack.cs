@@ -20,7 +20,7 @@ public class PlayerAttack : MonoBehaviour
     }
     public void EndOfAttack()
     {
-        rb.gravityScale *=25;
+        if(rb.gravityScale < 1 && rb.gravityScale > -1) rb.gravityScale *=25;
     }
 
     // Update is called once per frame
@@ -29,7 +29,6 @@ public class PlayerAttack : MonoBehaviour
         if(isAttacking) return;
         gameObject.transform.position += new Vector3(0,0.3f,0); //offset Attack Sprites
         isAttacking = true;
-        rb.gravityScale /=25;
         playerAnim.SetTrigger("Attack");
         if(target.tag == "Chain")
         {
@@ -48,6 +47,7 @@ public class PlayerAttack : MonoBehaviour
     }
     private IEnumerator AttackMonsterKillerCoroutine(GameObject target)
     {
+        rb.gravityScale /=25;
         yield return new WaitForSeconds(0.20f);
         GameObject attackHit = Instantiate(attackHitPrefab, transform.position + new Vector3(0.5f,0,0), Quaternion.identity);
         Destroy(attackHit, 0.5f);
@@ -69,6 +69,7 @@ public class PlayerAttack : MonoBehaviour
 
         if(doSlowMotion)
         {
+            Debug.Log("Slow Motion");
             float gravityScaleTempo = playerMovement.rb.gravityScale;
             playerMovement.rb.gravityScale = 0;
             playerMovement.speed /= 2;

@@ -15,7 +15,7 @@ public class SpawnObstacles : MonoBehaviour
     [SerializeField] private float distanceBetweenPhases = 0f;
     [SerializeField] private string startPhase;
     private float phaseDistance = 0f;
-    [SerializeField] private string currentPhase = "Start";
+    public string currentPhase = "Start";
     private float currentPhaseXPosition = 0f;
     private int currentPhaseIndex = 0;
     private bool isMessageDisplayed = false;
@@ -157,7 +157,7 @@ public class SpawnObstacles : MonoBehaviour
 
         if(distanceSinceLastLaser >= laserMinDistance)
         {
-            laserSpawnPosition = new Vector3(mainCameraPos.position.x + Random.Range(laserMinDistance, laserMaxDistance), 0, 0);
+            laserSpawnPosition = new Vector3(Mathf.Min(currentPhaseXPosition + phaseDistance , mainCameraPos.position.x + Random.Range(laserMinDistance, laserMaxDistance)), 0, 0);
             GameObject laser = Instantiate(laserPrefab, laserSpawnPosition, Quaternion.identity);
             laser.transform.parent = transform;
             cameraPosWhenLastLaserSpawned = mainCameraPos.position;
@@ -180,7 +180,7 @@ public class SpawnObstacles : MonoBehaviour
     {
         for(int i = 0; i < numberOfDrones; i++)
         {
-            droneSpawnPosition = new Vector3(mainCameraPos.position.x, 0, 0);
+            droneSpawnPosition = new Vector3(mainCameraPos.position.x+10, 0, 0);
             GameObject drone = Instantiate(dronePrefab, droneSpawnPosition, Quaternion.identity);
             drone.transform.parent = mainCameraPos.transform;
             yield return new WaitForSeconds(Random.Range(1f, 3f));
@@ -193,7 +193,7 @@ public class SpawnObstacles : MonoBehaviour
         if(distanceSinceLastSuspendedWall >= suspendedWallMinDistance)
             {
                 int indexWall = Random.Range(0, suspendedWallPrefab.Length);
-                suspendedWallSpawnPosition = new Vector3(mainCameraPos.position.x + Random.Range(suspendedWallMinDistance, suspendedWallMaxDistance), 0, 0);
+                suspendedWallSpawnPosition = new Vector3(Mathf.Min(currentPhaseXPosition + phaseDistance, mainCameraPos.position.x + Random.Range(suspendedWallMinDistance, suspendedWallMaxDistance)), 0, 0);
                 GameObject suspendedWall = Instantiate(suspendedWallPrefab[indexWall], suspendedWallSpawnPosition, Quaternion.identity);
                 suspendedWall.transform.parent = transform;
                 cameraPosWhenLastSuspendedWallSpawned = mainCameraPos.position;
@@ -207,7 +207,7 @@ public class SpawnObstacles : MonoBehaviour
         if(distanceSinceLastSquare >= squareMinDistance)
         {
             int indexYPosition = DetermineYPositionSquare();
-            squareSpawnPosition = new Vector3(mainCameraPos.position.x + Random.Range(squareMinDistance, squareMaxDistance), possibleYPositions[indexYPosition], 0);
+            squareSpawnPosition = new Vector3(Mathf.Min(currentPhaseXPosition + phaseDistance, mainCameraPos.position.x + Random.Range(squareMinDistance, squareMaxDistance)), possibleYPositions[indexYPosition], 0);
             GameObject square = Instantiate(squarePrefab, squareSpawnPosition, Quaternion.identity);
             square.transform.parent = transform;
             cameraPosWhenLastSquareSpawned = mainCameraPos.position;
