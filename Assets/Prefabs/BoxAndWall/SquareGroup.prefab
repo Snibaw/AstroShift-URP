@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 6081370023575002218}
   - component: {fileID: 776377421929883104}
   - component: {fileID: 557661429}
-  - component: {fileID: 6511130615044669007}
+  - component: {fileID: 2265763386450967249}
   m_Layer: 0
   m_Name: Triangle (1)
   m_TagString: Obstacle
@@ -189,7 +189,7 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.03953132, y: 0.1607829}
+    - - {x: 0.035270326, y: 0.19541082}
       - {x: -0.28483886, y: -0.27880064}
       - {x: 0.5, y: -0.28866667}
 --- !u!95 &776377421929883104
@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d17b0eac6b586b34abf30134a91dcf42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!50 &6511130615044669007
+--- !u!50 &2265763386450967249
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -232,14 +232,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3738903398454077110}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -259,7 +259,7 @@ GameObject:
   - component: {fileID: 6700262410778693166}
   - component: {fileID: 7805413288400659701}
   - component: {fileID: 1958564221}
-  - component: {fileID: 6554017176866934282}
+  - component: {fileID: 5639586276003164354}
   m_Layer: 0
   m_Name: Triangle
   m_TagString: Obstacle
@@ -377,7 +377,7 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.01438874, y: 0.1624065}
+    - - {x: -0.0143887345, y: 0.20198141}
       - {x: -0.5, y: -0.28866667}
       - {x: 0.28408325, y: -0.2835216}
 --- !u!95 &7805413288400659701
@@ -412,7 +412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d17b0eac6b586b34abf30134a91dcf42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!50 &6554017176866934282
+--- !u!50 &5639586276003164354
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -420,7 +420,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8274911600330210957}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0

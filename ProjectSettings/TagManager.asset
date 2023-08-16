@@ -9,6 +9,8 @@ TagManager:
   - FxTemporaire
   - Drone
   - Coin
+  - Monster
+  - MonsterKiller
   layers:
   - Default
   - TransparentFX
