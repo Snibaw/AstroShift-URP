@@ -21,7 +21,7 @@ public class DroneBulletBehaviour : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            GameObject.Find("GameManager").GetComponent<GameManager>().GameOver();
+            GameObject.Find("GameManager").GetComponent<GameManager>().PlayerTakeDamage();
         }
         if(other.CompareTag("Player") || other.CompareTag("Chain") || other.CompareTag("Obstacle"))
         {

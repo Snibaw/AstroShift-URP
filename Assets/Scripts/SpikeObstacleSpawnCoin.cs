@@ -11,11 +11,13 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
     [SerializeField] private float probabilityToSpawnMonsterScoreMultiplier;
     [SerializeField] private float probabilityToSpawnBonus;
     [SerializeField] private GameObject[] bonusList;
+    [SerializeField] private GameObject bonusParent;
     public int bonusSpawnedIndex = 0;
     public bool canSpawnBonus = false;
     private BonusBehaviour currentBonusBehaviour;
     private bool doCurrentBonusMoveToPlayer = false;
     private bool isBonusSpawned = false;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +45,7 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
     {
         if(Random.Range(0,100) < probabilityToSpawnBonus)
         {
+            bonusParent.SetActive(true);
             bonusSpawnedIndex = Random.Range(0,bonusList.Length);
             foreach(GameObject bonus in bonusList)
             {
@@ -52,9 +55,15 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
             currentBonusBehaviour = bonusList[bonusSpawnedIndex].GetComponent<BonusBehaviour>();
             isBonusSpawned = true;
         }
+        else 
+        {
+            bonusParent.SetActive(false);
+        }
     }
     private void SpawnMonsterScoreMultiplier()
     {
+        if(PlayerPrefs.GetInt("scoreMultiplier", 0) >= 30) return;
+
         if(Random.Range(0,100) < probabilityToSpawnMonsterScoreMultiplier)
             {
                 monsterScoreMultiplier.SetActive(true);

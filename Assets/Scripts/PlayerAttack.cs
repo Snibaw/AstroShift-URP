@@ -6,7 +6,7 @@ public class PlayerAttack : MonoBehaviour
 {
     private Animator playerAnim;
     private PlayerMovement playerMovement;
-    private bool isAttacking = false;
+    public bool isAttacking = false;
     [SerializeField] private GameObject attackHitPrefab;
     [SerializeField] private AttackRangePlayer attackRangePlayer;
     private Rigidbody2D rb;

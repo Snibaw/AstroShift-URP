@@ -14,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     public bool canMove = true;
     [SerializeField] private float antiRebondTimerMax = 0.01f;
     private float antiRebondTimer;
+    private bool isTouching = false;
+    private bool wasTouching = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,9 +35,17 @@ public class PlayerMovement : MonoBehaviour
         //Check if the player is grounded
         CheckIfGrounded();
 
+        if(Input.touchCount > 0)
+        {
+            isTouching = true;
+        }
+        else
+        {
+            isTouching = false;
+        }
 
         //If the player press left click make the gravity change
-        if (Input.GetMouseButtonDown(0) && antiRebondTimer <= 0)
+        if ((Input.GetMouseButtonDown(0) && antiRebondTimer <= 0) || (isTouching && !wasTouching))
         {
             antiRebondTimer = antiRebondTimerMax;
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y/3);
@@ -53,6 +63,9 @@ public class PlayerMovement : MonoBehaviour
             //     FlipSprite();
             // }
         }
+
+        wasTouching = isTouching;
+
         if(!isGrounded && !Jumping)
         {
             JumpAnimation();

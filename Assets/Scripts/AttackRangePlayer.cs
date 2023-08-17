@@ -88,21 +88,7 @@ public class AttackRangePlayer : MonoBehaviour
 
         objectParentCollidedWith.transform.GetChild(0).gameObject.GetComponent<SpikeObstacleSpawnCoin>().CheckIfBonus();
 
-        foreach(Rigidbody2D rb2D in objectParentCollidedWith.GetComponentsInChildren<Rigidbody2D>())
-        {
-            if(rb2D.gameObject.CompareTag("ScoreMultiplier")) // Destroy the score multiplier and add score
-            {
-                Destroy(rb2D.gameObject,1f);
-                GameObject.Find("GameManager").GetComponent<GameManager>().PickScoreMultiplier  ();
-            }
-            rb2D.constraints = RigidbodyConstraints2D.None;
-            rb2D.gravityScale = 1;
-            //Add random force to every object
-            rb2D.AddForce(new Vector2(Random.Range(-5f,5f),Random.Range(-5f,5f)),ForceMode2D.Impulse);
-            //Add force to make them rotate
-            rb2D.AddTorque(Random.Range(-2f,2f),ForceMode2D.Impulse);
-            Destroy(rb2D.gameObject, 2.5f);
-        }
+        GameObject.Find("GameManager").GetComponent<GameManager>().DoAnimationSuspendedWall(objectParentCollidedWith);
     }
     private void FadeAwayObjectsCollidedWith()
     {
@@ -111,4 +97,6 @@ public class AttackRangePlayer : MonoBehaviour
             animator.SetTrigger("FadeAway");
         }
     }
+    
+
 }

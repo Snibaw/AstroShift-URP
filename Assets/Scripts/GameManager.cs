@@ -10,6 +10,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject[] removeWhenStart;
     [SerializeField] private GameObject[] showWhenStart;
     [SerializeField] private GameObject[] showWhenGameOver;
+    [SerializeField] private float invincibleTimer = 1.5f;
+    [SerializeField] private GameObject explosionPrefab;
+    [SerializeField] private GameObject poufPrefab;
+    private TMP_Text scoreMultiplierDisplayText;
     private TMP_Text scoreMultiplierText;
     private TMP_Text ratioMultiplierText;
     private GameObject backGroundScoreMultiplier;
@@ -23,14 +27,22 @@ public class GameManager : MonoBehaviour
     private bool isStarted;
     private float startSpeed = 8f;
     private BonusContainer bonusContainer;
+    private bool isShieldTimeActive = false;
+    private bool isShieldOnceActive = false;
+    private bool isInvincible = false;
     // Start is called before the first frame update
     void Start()
     {
+
+
         bonusContainer = GameObject.Find("BonusContainer").GetComponent<BonusContainer>();
 
         scoreMultiplier = PlayerPrefs.GetInt("scoreMultiplier", 0);
         scoreMultiplierText = GameObject.Find("ScoreMultiplierText").GetComponent<TMP_Text>();
         scoreMultiplierText.text = scoreMultiplier.ToString("00");
+
+        scoreMultiplierDisplayText = GameObject.Find("ScoreMultiplierDisplayText").GetComponent<TMP_Text>();
+        scoreMultiplierDisplayText.text = "x"+Mathf.Min(30,(scoreMultiplier+1)).ToString("00");
 
         ratioMultiplierText = GameObject.Find("RatioMultiplier").GetComponent<TMP_Text>();
         ratioMultiplierText.text = (scoreMultiplier).ToString("00")+"/"+maxScoreMultiplier.ToString("00");
@@ -69,9 +81,37 @@ public class GameManager : MonoBehaviour
         isStarted = false;
     }
     private void Update() {
-        if(isStarted) scoreText.text = (player.transform.position.x*scoreMultiplier).ToString("0") ;
+        if(isStarted) scoreText.text = (player.transform.position.x*(1+scoreMultiplier)).ToString("0") ;
     }
 
+    public void PlayerTakeDamage()
+    {
+        if(isInvincible) return;
+        if(isShieldOnceActive)
+        {
+            isShieldOnceActive = false;
+            bonusContainer.RemoveElement(0);
+            StartCoroutine(PlayerInvincible());
+            GameObject Explosion = Instantiate(explosionPrefab, player.transform.position, Quaternion.identity);
+            Destroy(Explosion, 1.5f);
+            DestroyEveryObstacles();
+            return;
+        }
+        else if(isShieldTimeActive)
+        {
+            isShieldTimeActive = false;
+            bonusContainer.RemoveElement(1);
+            StartCoroutine(PlayerInvincible());
+            GameObject Explosion = Instantiate(explosionPrefab, player.transform.position, Quaternion.identity);
+            Destroy(Explosion, 1.5f);
+            DestroyEveryObstacles();
+            return;
+        }
+        else
+        {
+            GameOver();
+        }
+    }
     public void GameOver()
     {
         if(int.Parse(scoreText.text) > highScore)
@@ -135,7 +175,74 @@ public class GameManager : MonoBehaviour
     public IEnumerator PickUpBonus(int bonusIndex, BonusBehaviour bonus)
     {
         bonus.GetComponent<BonusBehaviour>().PickUpBonusCoroutine();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
+        //Add bonus in UI (top left corner of the screen)
         bonusContainer.AddBonusElement(bonusIndex);
+        //Add bonus in boolean to avoid death when hit
+        if(bonusIndex == 0) isShieldOnceActive = true;
+        else if(bonusIndex == 1) isShieldTimeActive = true;
+    }
+    public void DesactivateShieldBonus(int bonusIndex)
+    {
+        if(bonusIndex == 0) isShieldOnceActive = false;
+        else if(bonusIndex == 1) isShieldTimeActive = false;
+    }
+    private void DestroyEveryObstacles()
+    {
+        //DestroyChainObstacles();
+        GameObject[] chainObstacles = GameObject.FindGameObjectsWithTag("Chain");
+        foreach(GameObject obstacle in chainObstacles)
+        {
+            DoAnimationSuspendedWall(obstacle.transform.parent.gameObject, giveBonus: false);
+        }
+
+        //Search obstacles where the first 11 caracters are : "Square Group"
+        GameObject[] squareObstacles = GameObject.FindGameObjectsWithTag("Obstacle");
+        foreach(GameObject obstacle in squareObstacles)
+        {
+            if(obstacle.name.Length >= 11 && obstacle.name.Substring(0,11) == "SquareGroup")
+            {
+                Instantiate(poufPrefab, obstacle.transform.position, Quaternion.identity);
+                Destroy(obstacle);
+            }
+        }
+    }
+    public void DoAnimationSuspendedWall(GameObject parentObject, bool giveBonus = true)
+    {
+        foreach(Rigidbody2D rb2D in parentObject.GetComponentsInChildren<Rigidbody2D>())
+        {
+            if(rb2D.gameObject.CompareTag("ScoreMultiplier") && giveBonus) // Destroy the score multiplier and add score
+            {
+                Destroy(rb2D.gameObject,1f);
+                GameObject.Find("GameManager").GetComponent<GameManager>().PickScoreMultiplier();
+            }
+            rb2D.constraints = RigidbodyConstraints2D.None;
+            rb2D.gravityScale = 1;
+            //Add random force to every object
+            rb2D.AddForce(new Vector2(Random.Range(-5f,5f),Random.Range(-5f,5f)),ForceMode2D.Impulse);
+            //Add force to make them rotate
+            rb2D.AddTorque(Random.Range(-2f,2f),ForceMode2D.Impulse);
+            Destroy(rb2D.gameObject, 1.5f);
+        }
+    }
+    private IEnumerator PlayerInvincible()
+    {
+        isInvincible = true;
+        //Player can't attack (create bugs)
+        player.GetComponent<PlayerAttack>().isAttacking = true;
+
+        float massTempo = player.GetComponent<Rigidbody2D>().mass;
+        player.GetComponent<Rigidbody2D>().mass = 10000;
+        for(int i=0; i<2; i++)
+        {
+            player.GetComponent<SpriteRenderer>().color = new Color(1,1,1,0.1f);
+            yield return new WaitForSeconds(invincibleTimer/4);
+            player.GetComponent<SpriteRenderer>().color = new Color(1,1,1,1);
+            yield return new WaitForSeconds(invincibleTimer/4);
+        }
+        player.GetComponent<Rigidbody2D>().mass = massTempo;
+        isInvincible = false;
+        player.GetComponent<PlayerAttack>().isAttacking = false;
+        
     }
 }
