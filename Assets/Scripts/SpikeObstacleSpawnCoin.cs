@@ -15,6 +15,7 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
     public bool canSpawnBonus = false;
     private BonusBehaviour currentBonusBehaviour;
     private bool doCurrentBonusMoveToPlayer = false;
+    private bool isBonusSpawned = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -49,6 +50,7 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
             }
             bonusList[bonusSpawnedIndex].SetActive(true);
             currentBonusBehaviour = bonusList[bonusSpawnedIndex].GetComponent<BonusBehaviour>();
+            isBonusSpawned = true;
         }
     }
     private void SpawnMonsterScoreMultiplier()
@@ -72,12 +74,11 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
         GameObject coin = Instantiate(coinPrefab[Random.Range(0,coinPrefab.Length)],transform.position + new Vector3(0,coinTransformY[1],0),Quaternion.identity);
         coin.transform.parent = transform;
     }
-    public IEnumerator MoveCurrentBonusToPlayer()
+    public void CheckIfBonus()
     {
-        if(currentBonusBehaviour.doMoveToPlayer) yield break;
-        yield return new WaitForSeconds(1f);
-        currentBonusBehaviour.doMoveToPlayer = true;
-        currentBonusBehaviour.gameObject.GetComponent<Animator>().SetTrigger("Move");
-        Destroy(currentBonusBehaviour.gameObject, 5f);
+        if(isBonusSpawned)
+        {
+            StartCoroutine(GameObject.Find("GameManager").GetComponent<GameManager>().PickUpBonus(bonusSpawnedIndex, currentBonusBehaviour));
+        }
     }
 }

@@ -86,7 +86,7 @@ public class AttackRangePlayer : MonoBehaviour
     {
         yield return new WaitForSeconds(0.25f);
 
-        StartCoroutine(objectParentCollidedWith.transform.GetChild(0).gameObject.GetComponent<SpikeObstacleSpawnCoin>().MoveCurrentBonusToPlayer());
+        objectParentCollidedWith.transform.GetChild(0).gameObject.GetComponent<SpikeObstacleSpawnCoin>().CheckIfBonus();
 
         foreach(Rigidbody2D rb2D in objectParentCollidedWith.GetComponentsInChildren<Rigidbody2D>())
         {

@@ -22,9 +22,12 @@ public class GameManager : MonoBehaviour
     private int coin = 0;
     private bool isStarted;
     private float startSpeed = 8f;
+    private BonusContainer bonusContainer;
     // Start is called before the first frame update
     void Start()
     {
+        bonusContainer = GameObject.Find("BonusContainer").GetComponent<BonusContainer>();
+
         scoreMultiplier = PlayerPrefs.GetInt("scoreMultiplier", 0);
         scoreMultiplierText = GameObject.Find("ScoreMultiplierText").GetComponent<TMP_Text>();
         scoreMultiplierText.text = scoreMultiplier.ToString("00");
@@ -128,5 +131,11 @@ public class GameManager : MonoBehaviour
         scoreMultiplierText.text = scoreMultiplier.ToString("00");
         yield return new WaitForSeconds(3f);
         backGroundScoreMultiplier.GetComponent<Animator>().SetTrigger("Off");
+    }
+    public IEnumerator PickUpBonus(int bonusIndex, BonusBehaviour bonus)
+    {
+        bonus.GetComponent<BonusBehaviour>().PickUpBonusCoroutine();
+        yield return new WaitForSeconds(2f);
+        bonusContainer.AddBonusElement(bonusIndex);
     }
 }

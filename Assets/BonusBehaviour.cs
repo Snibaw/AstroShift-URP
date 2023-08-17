@@ -21,4 +21,11 @@ public class BonusBehaviour : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, playerTransform.position, bonusSpeed * Time.deltaTime);
         }
     }
+    public void PickUpBonusCoroutine()
+    {
+        if(doMoveToPlayer) return;
+        doMoveToPlayer = true;
+        gameObject.GetComponent<Animator>().SetTrigger("Move");
+        Destroy(gameObject, 5f);
+    }
 }
