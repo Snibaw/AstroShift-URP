@@ -85,9 +85,12 @@ public class AttackRangePlayer : MonoBehaviour
     private IEnumerator AnimateHitSuspendedWall()
     {
         yield return new WaitForSeconds(0.25f);
+
+        StartCoroutine(objectParentCollidedWith.transform.GetChild(0).gameObject.GetComponent<SpikeObstacleSpawnCoin>().MoveCurrentBonusToPlayer());
+
         foreach(Rigidbody2D rb2D in objectParentCollidedWith.GetComponentsInChildren<Rigidbody2D>())
         {
-            if(rb2D.gameObject.CompareTag("ScoreMultiplier"))
+            if(rb2D.gameObject.CompareTag("ScoreMultiplier")) // Destroy the score multiplier and add score
             {
                 Destroy(rb2D.gameObject,1f);
                 GameObject.Find("GameManager").GetComponent<GameManager>().PickScoreMultiplier  ();

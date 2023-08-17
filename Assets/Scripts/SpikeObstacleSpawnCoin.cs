@@ -9,23 +9,21 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
     [SerializeField] private float[] coinTransformY;
     [SerializeField] private GameObject monsterScoreMultiplier;
     [SerializeField] private float probabilityToSpawnMonsterScoreMultiplier;
-    public bool canSpawnMonsterScoreMultiplier = false;
+    [SerializeField] private float probabilityToSpawnBonus;
+    [SerializeField] private GameObject[] bonusList;
+    public int bonusSpawnedIndex = 0;
+    public bool canSpawnBonus = false;
+    private BonusBehaviour currentBonusBehaviour;
+    private bool doCurrentBonusMoveToPlayer = false;
     // Start is called before the first frame update
     void Start()
     {
-        if(canSpawnMonsterScoreMultiplier)
+        if(canSpawnBonus)
         {
-            if(Random.Range(0,100) < probabilityToSpawnMonsterScoreMultiplier)
-            {
-                monsterScoreMultiplier.SetActive(true);
-            }
-            else
-            {
-                monsterScoreMultiplier.SetActive(false);
-            }
+            SpawnMonsterScoreMultiplier();
+            SpawnBonus();
         }
             
-
 
         if(Random.Range(0,3) == 0)
             return;
@@ -40,6 +38,30 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
         }
 
     }
+    private void SpawnBonus()
+    {
+        if(Random.Range(0,100) < probabilityToSpawnBonus)
+        {
+            bonusSpawnedIndex = Random.Range(0,bonusList.Length);
+            foreach(GameObject bonus in bonusList)
+            {
+                bonus.SetActive(false);
+            }
+            bonusList[bonusSpawnedIndex].SetActive(true);
+            currentBonusBehaviour = bonusList[bonusSpawnedIndex].GetComponent<BonusBehaviour>();
+        }
+    }
+    private void SpawnMonsterScoreMultiplier()
+    {
+        if(Random.Range(0,100) < probabilityToSpawnMonsterScoreMultiplier)
+            {
+                monsterScoreMultiplier.SetActive(true);
+            }
+            else
+            {
+                monsterScoreMultiplier.SetActive(false);
+            }
+    }
     private void SpawnCoinOnTop()
     {
         GameObject coin = Instantiate(coinPrefab[Random.Range(0,coinPrefab.Length)],transform.position + new Vector3(0,coinTransformY[0],0),Quaternion.identity);
@@ -49,5 +71,13 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
     {
         GameObject coin = Instantiate(coinPrefab[Random.Range(0,coinPrefab.Length)],transform.position + new Vector3(0,coinTransformY[1],0),Quaternion.identity);
         coin.transform.parent = transform;
+    }
+    public IEnumerator MoveCurrentBonusToPlayer()
+    {
+        if(currentBonusBehaviour.doMoveToPlayer) yield break;
+        yield return new WaitForSeconds(1f);
+        currentBonusBehaviour.doMoveToPlayer = true;
+        currentBonusBehaviour.gameObject.GetComponent<Animator>().SetTrigger("Move");
+        Destroy(currentBonusBehaviour.gameObject, 5f);
     }
 }
