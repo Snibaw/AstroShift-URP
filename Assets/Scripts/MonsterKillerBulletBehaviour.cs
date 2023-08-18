@@ -11,7 +11,7 @@ public class MonsterKillerBulletBehaviour : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         transform.position += Vector3.left * 5 * Time.deltaTime;
     }

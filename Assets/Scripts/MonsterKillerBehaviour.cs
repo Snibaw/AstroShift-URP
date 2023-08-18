@@ -14,7 +14,6 @@ public class MonsterKillerBehaviour : MonoBehaviour
     public bool isTop = false;
     private GameObject player;
     private float speed;
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
@@ -25,8 +24,7 @@ public class MonsterKillerBehaviour : MonoBehaviour
         speed = player.GetComponent<PlayerMovement>().speed/2 - 2;
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         transform.position += Vector3.right * speed * Time.deltaTime;
 

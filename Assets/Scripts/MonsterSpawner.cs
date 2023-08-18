@@ -27,7 +27,7 @@ public class MonsterSpawner : MonoBehaviour
         timeBtwSpawnKillerTempo = timeBtwSpawnKiller;
     }
 
-    private void Update() {
+    private void FixedUpdate() {
         timeBtwSpawnKillerTempo -= Time.deltaTime;
 
         if(timeBtwSpawnsTempoBot > 0) timeBtwSpawnsTempoBot -= Time.deltaTime;

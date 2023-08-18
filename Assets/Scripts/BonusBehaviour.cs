@@ -11,8 +11,7 @@ public class BonusBehaviour : MonoBehaviour
     private void Start() {
         playerTransform = GameObject.Find("Player").transform;
     }
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(doMoveToPlayer)
         {

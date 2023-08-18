@@ -30,9 +30,7 @@ public class MonsterBehaviour : MonoBehaviour
         heart = transform.GetChild(0).gameObject;
         heart.SetActive(false);
     }
-
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(isDead) return;
 

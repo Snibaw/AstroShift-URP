@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
         if ((Input.GetMouseButtonDown(0) && antiRebondTimer <= 0) || (isTouching && !wasTouching))
         {
             antiRebondTimer = antiRebondTimerMax;
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y/3);
+            rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.gravityScale = -rb.gravityScale;
             
             dontCheckIfGrounded = true;

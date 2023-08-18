@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isShooting: 0
-  movementSpeed: 0.005
+  movementSpeed: 0.03
   sightRange: 0.5
   glowColors:
   - {r: 0.30980393, g: 0.99607843, b: 0.99607843, a: 1}
@@ -158,6 +158,7 @@ MonoBehaviour:
   timeBeforeLeavingScreen: 12
   isStarting: 1
   isLeaving: 0
+  prepareToLeave: 0
   isDead: 0
 --- !u!58 &3901540647815690892
 CircleCollider2D:

@@ -30,10 +30,10 @@ public class GameManager : MonoBehaviour
     private bool isShieldTimeActive = false;
     private bool isShieldOnceActive = false;
     private bool isInvincible = false;
-    // Start is called before the first frame update
     void Start()
     {
-
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
 
         bonusContainer = GameObject.Find("BonusContainer").GetComponent<BonusContainer>();
 
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         }
         isStarted = false;
     }
-    private void Update() {
+    private void FixedUpdate() {
         if(isStarted) scoreText.text = (player.transform.position.x*(1+scoreMultiplier)).ToString("0") ;
     }
 

@@ -31,7 +31,6 @@ namespace Kino
     {
         #region Public Methods
 
-        // Update internal state with a given bloom instance.
         public void Prepare(Bloom bloom)
         {
             #if UNITY_5_6_OR_NEWER

@@ -23,7 +23,7 @@ public class DroneBehaviour : MonoBehaviour
     [SerializeField] private float bulletSpeed = 10f;
     [SerializeField] private float timeInFrontOfPlayerBeforeShooting = 0.5f;
     [SerializeField] private float offsetBtwDroneAndCamera = 7f;
-    [SerializeField] private float offsetStartBtwDroneAndCamera = 12f;
+    [SerializeField] private float offsetStartBtwDroneAndCamera = 15f;
     [SerializeField] private float timeBeforeLeavingScreen = 15f;
     private float timeInFrontOfPlayerBeforeShootingTempo;
     private float timeBtwShootTempo;
@@ -52,8 +52,7 @@ public class DroneBehaviour : MonoBehaviour
         circleCollider2D = GetComponent<CircleCollider2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(isDead) return;
         if(prepareToLeave)
@@ -68,13 +67,13 @@ public class DroneBehaviour : MonoBehaviour
         }
         if(isLeaving)
         {
-            transform.position = new Vector3(transform.position.x - 0.03f, transform.position.y, transform.position.z);
+            transform.position = new Vector3(transform.position.x - 0.1f, transform.position.y, transform.position.z);
             return;
         }
 
         if(isStarting) 
         {
-            transform.position = new Vector3(transform.position.x - 0.02f, transform.position.y, transform.position.z);
+            transform.position = new Vector3(transform.position.x - 0.1f, transform.position.y, transform.position.z);
 
             if(transform.position.x > camPos.position.x + offsetBtwDroneAndCamera - 0.1f && transform.position.x < camPos.position.x + offsetBtwDroneAndCamera + 0.1f)
             {

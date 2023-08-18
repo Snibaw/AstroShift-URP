@@ -11,8 +11,7 @@ public class DroneBulletBehaviour : MonoBehaviour
         bulletAnimator = GetComponent<Animator>();
         Destroy(gameObject, 5f);
     }
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //Move the bullet in -x axis
         transform.position += new Vector3(-speed * Time.deltaTime, 0, 0);

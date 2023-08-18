@@ -13,7 +13,6 @@ public class LaserParentBehaviour : MonoBehaviour
     private float laserMiddleLength;
     [SerializeField] private float[] YBoderPositions;
     private float yPosition;
-    // Start is called before the first frame update
     void Start()
     {
         laserMiddleLength = laserMiddlePrefab.GetComponent<SpriteRenderer>().bounds.size.x;
@@ -36,11 +35,6 @@ public class LaserParentBehaviour : MonoBehaviour
         Destroy(gameObject, 20f);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     private void CreateHorizontalLaser()
     {
         GameObject laserExtremityLeft = Instantiate(laserExtremityPrefab, transform.position, Quaternion.identity);

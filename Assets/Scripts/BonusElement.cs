@@ -14,9 +14,7 @@ public class BonusElement : MonoBehaviour
     private Image borderImage;
     private Image bonusImage;
     public int bonusIndex;
-    // Start is called before the first frame update
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(time >0) time -= Time.deltaTime;
         UpdateTimeText();
