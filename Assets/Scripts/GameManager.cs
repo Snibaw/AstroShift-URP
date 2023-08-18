@@ -200,17 +200,22 @@ public class GameManager : MonoBehaviour
         GameObject[] squareObstacles = GameObject.FindGameObjectsWithTag("Obstacle");
         foreach(GameObject obstacle in squareObstacles)
         {
-            if(obstacle.name.Length >= 11 && obstacle.name.Substring(0,11) == "SquareGroup")
-            {
-                Instantiate(poufPrefab, obstacle.transform.position, Quaternion.identity);
-                Destroy(obstacle);
-            }
+            DestroySquareGroup(obstacle);
+        }
+    }
+    public void DestroySquareGroup(GameObject obstacle = null)
+    {
+        if(obstacle.name.Length >= 11 && obstacle.name.Substring(0,11) == "SquareGroup")
+        {
+            Instantiate(poufPrefab, obstacle.transform.GetChild(0).transform.position, Quaternion.identity);
+            Destroy(obstacle);
         }
     }
     public void DoAnimationSuspendedWall(GameObject parentObject, bool giveBonus = true)
     {
         foreach(Rigidbody2D rb2D in parentObject.GetComponentsInChildren<Rigidbody2D>())
         {
+            if(rb2D.gameObject.name == "Triangle") rb2D.gameObject.GetComponent<SpikeObstacle>().isDestroyed = true;
             if(rb2D.gameObject.CompareTag("ScoreMultiplier") && giveBonus) // Destroy the score multiplier and add score
             {
                 Destroy(rb2D.gameObject,1f);
@@ -222,7 +227,7 @@ public class GameManager : MonoBehaviour
             rb2D.AddForce(new Vector2(Random.Range(-5f,5f),Random.Range(-5f,5f)),ForceMode2D.Impulse);
             //Add force to make them rotate
             rb2D.AddTorque(Random.Range(-2f,2f),ForceMode2D.Impulse);
-            Destroy(rb2D.gameObject, 1.5f);
+            Destroy(rb2D.gameObject, 1f);
         }
     }
     private IEnumerator PlayerInvincible()

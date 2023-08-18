@@ -17,11 +17,11 @@ public class PlayerBonus : MonoBehaviour
     public void ActivateShield(int i)
     {
         Shields[i].SetActive(true);
-        Shields[i].GetComponent<Animator>().SetTrigger("On");
+        if(i !=3) Shields[i].GetComponent<Animator>().SetTrigger("On");
     }
     public void DesactivateShield(int i)
     {
-        Shields[i].GetComponent<Animator>().SetTrigger("Off");
+        if(i!=3) Shields[i].GetComponent<Animator>().SetTrigger("Off");
         StartCoroutine(WaitBeforeDesactivate(i));
     }
     private IEnumerator WaitBeforeDesactivate(int i)

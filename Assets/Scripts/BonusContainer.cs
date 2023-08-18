@@ -16,7 +16,6 @@ public class BonusContainer : MonoBehaviour
     }
     public void AddBonusElement(int bonusIndex)
     {        
-        Debug.Log("AddBonusElement");
         //Check if the bonus is already spawned
         if(bonusSpawnedIndex.Contains(bonusIndex))
         {
@@ -36,7 +35,7 @@ public class BonusContainer : MonoBehaviour
             bonusElement.transform.SetParent(transform);
             bonusElement.GetComponent<BonusElement>().InitBonusElement(bonusIndex, timeBonusElement[bonusIndex]);
             //Add shield corresponding to bonus (missile has no shield)
-            if(bonusIndex != 3) player.GetComponent<PlayerBonus>().ActivateShield(bonusIndex);
+            player.GetComponent<PlayerBonus>().ActivateShield(bonusIndex);
         }
         
     }
@@ -44,7 +43,7 @@ public class BonusContainer : MonoBehaviour
     {
         bonusSpawnedIndex.Remove(bonusIndex);
         //Remove shield corresponding to bonus (missile has no shield)
-        if(bonusIndex != 3) player.GetComponent<PlayerBonus>().DesactivateShield(bonusIndex);
+        player.GetComponent<PlayerBonus>().DesactivateShield(bonusIndex);
 
         gameManager.DesactivateShieldBonus(bonusIndex);
     }

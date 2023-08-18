@@ -30,8 +30,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2469012657281722157}
   - {fileID: 7703219977132337855}
+  - {fileID: 2469012657281722157}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -91,7 +91,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 144718735541558611, guid: e5a39eeb8b179b34f8fde3d3fc0b80c4, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 144718735541558611, guid: e5a39eeb8b179b34f8fde3d3fc0b80c4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -181,7 +181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6729620862752352892, guid: 01bf16da320c7bd4c8cd8ab35511f04d, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6729620862752352892, guid: 01bf16da320c7bd4c8cd8ab35511f04d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -226,6 +226,10 @@ PrefabInstance:
     - target: {fileID: 6742735934224550710, guid: 01bf16da320c7bd4c8cd8ab35511f04d, type: 3}
       propertyPath: m_Name
       value: SquarePart
+      objectReference: {fileID: 0}
+    - target: {fileID: 7223195308122802507, guid: 01bf16da320c7bd4c8cd8ab35511f04d, type: 3}
+      propertyPath: m_Name
+      value: Triangle
       objectReference: {fileID: 0}
     - target: {fileID: 7526004760405617631, guid: 01bf16da320c7bd4c8cd8ab35511f04d, type: 3}
       propertyPath: m_Materials.Array.data[0]

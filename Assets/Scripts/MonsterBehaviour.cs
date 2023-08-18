@@ -30,7 +30,7 @@ public class MonsterBehaviour : MonoBehaviour
         heart = transform.GetChild(0).gameObject;
         heart.SetActive(false);
     }
-    void FixedUpdate()
+    void Update()
     {
         if(isDead) return;
 

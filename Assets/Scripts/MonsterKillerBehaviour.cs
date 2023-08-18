@@ -24,7 +24,7 @@ public class MonsterKillerBehaviour : MonoBehaviour
         speed = player.GetComponent<PlayerMovement>().speed/2 - 2;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         transform.position += Vector3.right * speed * Time.deltaTime;
 

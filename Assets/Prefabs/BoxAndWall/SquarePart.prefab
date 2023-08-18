@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6729620862752352892}
   - component: {fileID: 4628401960532664905}
   m_Layer: 0
-  m_Name: SquarePart 1
+  m_Name: SquarePart
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
   - 0.3
   monsterScoreMultiplier: {fileID: 7786092935135975650}
   probabilityToSpawnMonsterScoreMultiplier: 5
-  probabilityToSpawnBonus: 10
+  probabilityToSpawnBonus: 20
   bonusList:
   - {fileID: 4475804760285777393}
   - {fileID: 4475804759711994127}
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 1204813873390733532}
   - component: {fileID: 698606501525742002}
   m_Layer: 0
-  m_Name: Triangle (1)
+  m_Name: Triangle
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -237,6 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d17b0eac6b586b34abf30134a91dcf42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDestroyed: 0
 --- !u!50 &698606501525742002
 Rigidbody2D:
   serializedVersion: 4
@@ -425,6 +426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d17b0eac6b586b34abf30134a91dcf42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDestroyed: 0
 --- !u!50 &5681240234778892331
 Rigidbody2D:
   serializedVersion: 4

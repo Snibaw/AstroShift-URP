@@ -49,7 +49,7 @@ MonoBehaviour:
   laserExtremityPrefab: {fileID: 6795825923914831949, guid: 01217c8753c64ab449efcb785bb72559, type: 3}
   laserMiddlePrefab: {fileID: 4644443045398391785, guid: 2498ce8661c9c16489e865b485c20cf7, type: 3}
   laserHorizontalMaxLength: 15
-  laserVerticalMaxLength: 8
+  laserVerticalMaxLength: 6
   YBoderPositions:
   - -4
   - 4
