@@ -12,6 +12,7 @@ TagManager:
   - Monster
   - MonsterKiller
   - ScoreMultiplier
+  - Laser
   layers:
   - Default
   - TransparentFX

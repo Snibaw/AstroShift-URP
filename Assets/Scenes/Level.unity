@@ -1396,7 +1396,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 54.099854, y: 1.500061}
+  m_AnchoredPosition: {x: 54.099854, y: 1.5001221}
   m_SizeDelta: {x: 94.8301, y: 65.2329}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &499660653
@@ -2679,7 +2679,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.3729644, y: 5.31}
+    oldSize: {x: 8.321688, y: 6.1600003}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -5154,7 +5154,7 @@ MonoBehaviour:
   phaseStartDistance: 50
   phaseLaserDistance: 80
   distanceBetweenPhases: 80
-  startPhase: Start
+  startPhase: Laser
   currentPhase: 0
   startMessages:
   - SALUT!!!

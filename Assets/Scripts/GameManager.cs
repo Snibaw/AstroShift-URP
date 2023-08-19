@@ -37,7 +37,6 @@ public class GameManager : MonoBehaviour
     private bool canUpdateScoreMultiplier = true;
     void Start()
     {
-
         if(PlayerPrefs.GetInt("scoreMultiplier", 0) >= maxScoreMultiplier)
         {
             canUpdateScoreMultiplier = false;
@@ -90,6 +89,8 @@ public class GameManager : MonoBehaviour
             obj.SetActive(false);
         }
         isStarted = false;
+
+        StartCoroutine(PickUpBonus(3, null));
     }
     private void FixedUpdate() {
         if(isStarted) scoreText.text = (player.transform.position.x*(1+scoreMultiplier)).ToString("0") ;
@@ -224,6 +225,13 @@ public class GameManager : MonoBehaviour
         foreach(GameObject obstacle in squareObstacles)
         {
             DestroySquareGroup(obstacle);
+        }
+
+        //Destroy Laser Obstacles
+        GameObject[] laserObstacles = GameObject.FindGameObjectsWithTag("Laser");
+        foreach(GameObject obstacle in laserObstacles)
+        {
+            Destroy(obstacle);
         }
     }
     public void DestroySquareGroup(GameObject obstacle = null)

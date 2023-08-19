@@ -47,6 +47,18 @@ public class MissileBehaviour : MonoBehaviour
             }   
             
         }
+        else if(other.gameObject.CompareTag("Laser"))
+        {
+            //Find every child of the parent object with tag Laser and destroy it
+            foreach(Transform child in other.gameObject.transform.parent)
+            {
+                if(child.CompareTag("Laser"))
+                {
+                    Destroy(child.gameObject);
+                }
+            }
+            SpawnExplosionAndDestroy();
+        }
     }
     private void SpawnExplosionAndDestroy()
     {
