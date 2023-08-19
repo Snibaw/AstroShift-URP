@@ -3810,7 +3810,10 @@ MonoBehaviour:
   invincibleTimer: 1.5
   explosionPrefab: {fileID: 2433282508537954060, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312, type: 3}
   poufPrefab: {fileID: 141433446842962269, guid: 9fe8f8b3288e45a44af36ff8aa04486e, type: 3}
+  distanceBetweenBonus: 300
   scoreMultiplier: 0
+  canSpawnBonus: 1
+  canSpawnScoreMultiplier: 1
 --- !u!4 &1393649395
 Transform:
   m_ObjectHideFlags: 0
@@ -5151,7 +5154,7 @@ MonoBehaviour:
   phaseStartDistance: 50
   phaseLaserDistance: 80
   distanceBetweenPhases: 80
-  startPhase: Drone
+  startPhase: Start
   currentPhase: 0
   startMessages:
   - SALUT!!!

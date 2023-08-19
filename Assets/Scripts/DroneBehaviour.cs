@@ -28,6 +28,7 @@ public class DroneBehaviour : MonoBehaviour
     [SerializeField] private float offsetStartBtwDroneAndCamera = 15f;
     [SerializeField] private float timeBeforeLeavingScreen = 15f;
     [SerializeField] private GameObject coinPrefab;
+    [SerializeField] private float probabilityToSpawnBonus = 20f;
     private int bonusIndex = 0;
     private float timeInFrontOfPlayerBeforeShootingTempo;
     private float timeBtwShootTempo;
@@ -35,11 +36,21 @@ public class DroneBehaviour : MonoBehaviour
     public bool isLeaving = false;
     public bool prepareToLeave = false;
     public bool isDead = false;
+    private GameManager gameManager;
     // Start is called before the first frame update
     void Start()
     {
-        isGold = Random.Range(0,4) == 0;
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
+        if(gameManager.canSpawnBonus)
+        {
+            float probability = gameManager.canSpawnBonus ? probabilityToSpawnBonus*4 : probabilityToSpawnBonus;
+            if(Random.Range(0,100) < probability)
+            {
+                gameManager.BonusHasBeenSpawned();
+                isGold = true;
+            }
+        }
 
         playerPos = GameObject.Find("Player").transform;
         camPos = Camera.main.transform;

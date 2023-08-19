@@ -12,19 +12,22 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
     [SerializeField] private float probabilityToSpawnBonus;
     [SerializeField] private GameObject[] bonusList;
     [SerializeField] private GameObject bonusParent;
-    public int bonusSpawnedIndex = 0;
+    private int bonusSpawnedIndex = 0;
     public bool canSpawnBonus = false;
     private BonusBehaviour currentBonusBehaviour;
     private bool doCurrentBonusMoveToPlayer = false;
     private bool isBonusSpawned = false;
+    private GameManager gameManager;
     
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         if(canSpawnBonus)
         {
-            SpawnMonsterScoreMultiplier();
             SpawnBonus();
+            if(gameManager.canSpawnScoreMultiplier) SpawnMonsterScoreMultiplier();
         }
             
 
@@ -43,8 +46,10 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
     }
     private void SpawnBonus()
     {
-        if(Random.Range(0,100) < probabilityToSpawnBonus)
+        float probability = gameManager.canSpawnBonus ? probabilityToSpawnBonus*4 : probabilityToSpawnBonus;
+        if(Random.Range(0,100) < probability)
         {
+            gameManager.BonusHasBeenSpawned();
             bonusParent.SetActive(true);
             bonusSpawnedIndex = Random.Range(0,bonusList.Length);
             foreach(GameObject bonus in bonusList)
@@ -62,6 +67,8 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
     }
     private void SpawnMonsterScoreMultiplier()
     {
+        gameManager.canSpawnScoreMultiplier = false;
+
         if(PlayerPrefs.GetInt("scoreMultiplier", 0) >= 30) return;
 
         if(Random.Range(0,100) < probabilityToSpawnMonsterScoreMultiplier)
@@ -87,7 +94,7 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
     {
         if(isBonusSpawned)
         {
-            StartCoroutine(GameObject.Find("GameManager").GetComponent<GameManager>().PickUpBonus(bonusSpawnedIndex, currentBonusBehaviour));
+            StartCoroutine(gameManager.PickUpBonus(bonusSpawnedIndex, currentBonusBehaviour));
         }
     }
 }

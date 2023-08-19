@@ -60,8 +60,8 @@ MonoBehaviour:
   - 2.7
   - 0.3
   monsterScoreMultiplier: {fileID: 7786092935135975650}
-  probabilityToSpawnMonsterScoreMultiplier: 5
-  probabilityToSpawnBonus: 20
+  probabilityToSpawnMonsterScoreMultiplier: 15
+  probabilityToSpawnBonus: 15
   bonusList:
   - {fileID: 4475804760285777393}
   - {fileID: 4475804759711994127}

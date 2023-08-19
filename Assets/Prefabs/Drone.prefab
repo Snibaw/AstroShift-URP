@@ -156,13 +156,9 @@ MonoBehaviour:
   timeInFrontOfPlayerBeforeShooting: 1
   offsetBtwDroneAndCamera: 8
   offsetStartBtwDroneAndCamera: 15
-  timeBeforeLeavingScreen: 0
+  timeBeforeLeavingScreen: 12
   coinPrefab: {fileID: 8497500586065604415, guid: 6d217cb6c4b489b47998c60771b27043, type: 3}
-  bonusGameObject:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  probabilityToSpawnBonus: 20
   isStarting: 1
   isLeaving: 0
   prepareToLeave: 0

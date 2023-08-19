@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float invincibleTimer = 1.5f;
     [SerializeField] private GameObject explosionPrefab;
     [SerializeField] private GameObject poufPrefab;
+    [SerializeField] private float distanceBetweenBonus = 300f;
+    private float lastBonusSpawnedPosition = 0f;
     private TMP_Text scoreMultiplierDisplayText;
     private TMP_Text scoreMultiplierText;
     private TMP_Text ratioMultiplierText;
@@ -30,8 +32,17 @@ public class GameManager : MonoBehaviour
     private bool isShieldTimeActive = false;
     private bool isShieldOnceActive = false;
     private bool isInvincible = false;
+    public bool canSpawnBonus = true;
+    public bool canSpawnScoreMultiplier = true;
+    private bool canUpdateScoreMultiplier = true;
     void Start()
     {
+
+        if(PlayerPrefs.GetInt("scoreMultiplier", 0) >= maxScoreMultiplier)
+        {
+            canUpdateScoreMultiplier = false;
+        }
+
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
 
@@ -82,6 +93,18 @@ public class GameManager : MonoBehaviour
     }
     private void FixedUpdate() {
         if(isStarted) scoreText.text = (player.transform.position.x*(1+scoreMultiplier)).ToString("0") ;
+
+        if(lastBonusSpawnedPosition + distanceBetweenBonus < player.transform.position.x)
+        {
+            canSpawnBonus = true;
+        }
+
+    }
+
+    public void BonusHasBeenSpawned()
+    {
+        lastBonusSpawnedPosition = player.transform.position.x;
+        canSpawnBonus = false;
     }
 
     public void PlayerTakeDamage()
