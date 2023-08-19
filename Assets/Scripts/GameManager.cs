@@ -174,8 +174,8 @@ public class GameManager : MonoBehaviour
     }
     public IEnumerator PickUpBonus(int bonusIndex, BonusBehaviour bonus)
     {
-        bonus.GetComponent<BonusBehaviour>().PickUpBonusCoroutine();
-        yield return new WaitForSeconds(1f);
+        if(bonus != null) bonus.GetComponent<BonusBehaviour>().PickUpBonusCoroutine();
+        yield return new WaitForSeconds(0.2f);
         //Add bonus in UI (top left corner of the screen)
         bonusContainer.AddBonusElement(bonusIndex);
         //Add bonus in boolean to avoid death when hit
@@ -207,7 +207,7 @@ public class GameManager : MonoBehaviour
     {
         if(obstacle.name.Length >= 11 && obstacle.name.Substring(0,11) == "SquareGroup")
         {
-            Instantiate(poufPrefab, obstacle.transform.GetChild(0).transform.position, Quaternion.identity);
+            Instantiate(poufPrefab, obstacle.transform.position, Quaternion.identity);
             Destroy(obstacle);
         }
     }

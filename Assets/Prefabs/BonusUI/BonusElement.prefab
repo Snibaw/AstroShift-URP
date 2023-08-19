@@ -111,7 +111,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 9.2207, y: -3.300003}
+  m_AnchoredPosition: {x: 19.6, y: 2.399994}
   m_SizeDelta: {x: 179.6, y: 44.2128}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &5826165573771801549
@@ -268,6 +268,8 @@ MonoBehaviour:
   - {fileID: 5826165573496420437}
   - {fileID: 5826165574673272662}
   timeText: {fileID: 5826165573771801550}
+  limitTimeBeforeBlinking: 3
+  bonusIndex: 0
 --- !u!1 &5826165573999870433
 GameObject:
   m_ObjectHideFlags: 0

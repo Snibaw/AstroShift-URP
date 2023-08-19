@@ -148,14 +148,21 @@ MonoBehaviour:
   - {r: 1, g: 0.48472303, b: 0, a: 1}
   - {r: 1, g: 0.019385792, b: 0, a: 1}
   endGlowColor: {r: 1, g: 1, b: 1, a: 1}
+  endGlowColorGold: {r: 1, g: 0.9260169, b: 0, a: 1}
   timeBtwShootColorChange: 0.2
   timeBtwShoot: 2
   bulletPrefab: {fileID: 5269243197701211261, guid: d98e10220a9da524c9fe56a795ed2739, type: 3}
   bulletSpeed: 10
   timeInFrontOfPlayerBeforeShooting: 1
-  offsetBtwDroneAndCamera: 7
-  offsetStartBtwDroneAndCamera: 12
-  timeBeforeLeavingScreen: 12
+  offsetBtwDroneAndCamera: 8
+  offsetStartBtwDroneAndCamera: 15
+  timeBeforeLeavingScreen: 0
+  coinPrefab: {fileID: 8497500586065604415, guid: 6d217cb6c4b489b47998c60771b27043, type: 3}
+  bonusGameObject:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isStarting: 1
   isLeaving: 0
   prepareToLeave: 0

@@ -888,11 +888,11 @@ RectTransform:
   m_Father: {fileID: 59731807}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -905, y: 35}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -851, y: 236}
   m_SizeDelta: {x: 0, y: 190.1752}
-  m_Pivot: {x: 1, y: 0}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &208230749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1396,7 +1396,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 54.099854, y: 1.5}
+  m_AnchoredPosition: {x: 54.099854, y: 1.500061}
   m_SizeDelta: {x: 94.8301, y: 65.2329}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &499660653
@@ -2211,7 +2211,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1900, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -5149,8 +5149,9 @@ MonoBehaviour:
   possiblePhaseDistance: 150
   phaseCoinDistance: 100
   phaseStartDistance: 50
+  phaseLaserDistance: 80
   distanceBetweenPhases: 80
-  startPhase: Start
+  startPhase: Drone
   currentPhase: 0
   startMessages:
   - SALUT!!!
@@ -5186,13 +5187,14 @@ MonoBehaviour:
   - CIAO!
   - ZZCCMXTP!,!,
   - QUOI,     COUBEH!
+  - COLARTISTE ON INSTA
   squarePrefab: {fileID: 1277273908817567365, guid: b8232f50146980847a1563c13ffc917f, type: 3}
   squareMinDistance: 15
   squareMaxDistance: 30
   squareStartingXPosition: 0
   possibleYPositions:
-  - 2.2
-  - -5.2
+  - 3.7
+  - -3.7
   suspendedWallPrefab:
   - {fileID: 9215383851631251747, guid: 41441986a190bb842a8fcc5b72ed7d51, type: 3}
   - {fileID: 5471833925394834768, guid: c5dd781b469af9e4a950a62eac80c29b, type: 3}
@@ -5201,12 +5203,12 @@ MonoBehaviour:
   suspendedWallMaxDistance: 35
   suspendedWallStartingXPosition: 0
   dronePrefab: {fileID: 3901540647815690930, guid: 66291ecbb067d02479e52eab7dca7c4e, type: 3}
-  droneMinDistance: 120
-  droneMaxDistance: 200
+  droneMinDistance: 100
+  droneMaxDistance: 110
   droneStartingXPosition: 0
   laserPrefab: {fileID: 4154282983900994565, guid: 4a5dc6396161ba5408d0f8305c6e9208, type: 3}
-  laserMinDistance: 10
-  laserMaxDistance: 30
+  laserMinDistance: 30
+  laserMaxDistance: 40
   laserStartingXPosition: 0
 --- !u!4 &2084729227
 Transform:

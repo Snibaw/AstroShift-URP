@@ -55,33 +55,33 @@ public class AttackRangePlayer : MonoBehaviour
         StartCoroutine(AnimateHitSuspendedWall());
 
         //Light
-        GameObject lightObject = Instantiate(lightPrefab, objectParentCollidedWith.transform.position, Quaternion.identity);
-        Destroy(lightObject, 5f);
-        light = lightObject.GetComponent<UnityEngine.Rendering.Universal.Light2D>();
-        light.pointLightOuterRadius = 0f;
-        StartCoroutine(ModifyLightRange(0,lightRangeMax,lightRangeStep));
+        // GameObject lightObject = Instantiate(lightPrefab, objectParentCollidedWith.transform.position, Quaternion.identity);
+        // Destroy(lightObject, 5f);
+        // light = lightObject.GetComponent<UnityEngine.Rendering.Universal.Light2D>();
+        // light.pointLightOuterRadius = 0f;
+        // StartCoroutine(ModifyLightRange(0,lightRangeMax,lightRangeStep));
     }
-    private IEnumerator ModifyLightRange(float start, float end, float step)
-    {
-        float current = start;
-        while (current <= end)
-        {
-            current += step;
-            light.pointLightOuterRadius = current;
-            yield return new WaitForSeconds(lightRangeTime);
-        }
+    // private IEnumerator ModifyLightRange(float start, float end, float step)
+    // {
+    //     float current = start;
+    //     while (current <= end)
+    //     {
+    //         current += step;
+    //         light.pointLightOuterRadius = current;
+    //         yield return new WaitForSeconds(lightRangeTime);
+    //     }
 
-        yield return new WaitForSeconds(timeBtwOnOff);
+    //     yield return new WaitForSeconds(timeBtwOnOff);
 
-        FadeAwayObjectsCollidedWith();
+    //     FadeAwayObjectsCollidedWith();
         
-        while (current >= start)
-        {
-            current -= offRatioMultiplier*step;
-            light.pointLightOuterRadius = current;
-            yield return new WaitForSeconds(lightRangeTime);
-        }        
-    }
+    //     while (current >= start)
+    //     {
+    //         current -= offRatioMultiplier*step;
+    //         light.pointLightOuterRadius = current;
+    //         yield return new WaitForSeconds(lightRangeTime);
+    //     }        
+    // }
     private IEnumerator AnimateHitSuspendedWall()
     {
         yield return new WaitForSeconds(0.25f);
@@ -89,6 +89,8 @@ public class AttackRangePlayer : MonoBehaviour
         objectParentCollidedWith.transform.GetChild(0).gameObject.GetComponent<SpikeObstacleSpawnCoin>().CheckIfBonus();
 
         GameObject.Find("GameManager").GetComponent<GameManager>().DoAnimationSuspendedWall(objectParentCollidedWith);
+
+        FadeAwayObjectsCollidedWith();
     }
     private void FadeAwayObjectsCollidedWith()
     {

@@ -31,13 +31,13 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
         if(Random.Range(0,3) == 0)
             return;
         if(isSuspended)
-            SpawnCoinOnTop();
+            SpawnCoinOnTop(coinTransformY[0]);
         else
         {
             if(transform.position.y < 0)
-                SpawnCoinOnTop();
+                SpawnCoinOnTop(coinTransformY[1]);
             else
-                SpawnCoinOnBottom();
+                SpawnCoinOnBottom(coinTransformY[2]);
         }
 
     }
@@ -73,14 +73,14 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
                 monsterScoreMultiplier.SetActive(false);
             }
     }
-    private void SpawnCoinOnTop()
+    private void SpawnCoinOnTop(float yPosition)
     {
-        GameObject coin = Instantiate(coinPrefab[Random.Range(0,coinPrefab.Length)],transform.position + new Vector3(0,coinTransformY[0],0),Quaternion.identity);
+        GameObject coin = Instantiate(coinPrefab[Random.Range(0,coinPrefab.Length)],transform.position + new Vector3(0,yPosition,0),Quaternion.identity);
         coin.transform.parent = transform;
     }
-    private void SpawnCoinOnBottom()
+    private void SpawnCoinOnBottom(float yPosition)
     {
-        GameObject coin = Instantiate(coinPrefab[Random.Range(0,coinPrefab.Length)],transform.position + new Vector3(0,coinTransformY[1],0),Quaternion.identity);
+        GameObject coin = Instantiate(coinPrefab[Random.Range(0,coinPrefab.Length)],transform.position + new Vector3(0,yPosition,0),Quaternion.identity);
         coin.transform.parent = transform;
     }
     public void CheckIfBonus()

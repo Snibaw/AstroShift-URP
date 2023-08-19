@@ -12,6 +12,7 @@ public class SpawnObstacles : MonoBehaviour
     [SerializeField] private float possiblePhaseDistance;
     [SerializeField] private float phaseCoinDistance = 0f;
     [SerializeField] private float phaseStartDistance = 0f;
+    [SerializeField] private float phaseLaserDistance = 0f;
     [SerializeField] private float distanceBetweenPhases = 0f;
     [SerializeField] private string startPhase;
     private float phaseDistance = 0f;
@@ -68,6 +69,7 @@ public class SpawnObstacles : MonoBehaviour
     [SerializeField] private float laserMaxDistance = 50f;
     [SerializeField] private float laserStartingXPosition = 0f;
     private Vector3 laserSpawnPosition;
+    private float distanceUntilNextLaser = 0;
     private float distanceSinceLastLaser = 0;
     private Vector3 cameraPosWhenLastLaserSpawned;
 
@@ -84,8 +86,7 @@ public class SpawnObstacles : MonoBehaviour
 
         currentPhase = startPhase;
         currentPhaseXPosition = mainCameraPos.position.x;
-        if(currentPhase == "Start") phaseDistance = phaseStartDistance;
-        else phaseDistance = possiblePhaseDistance;
+        UpdatePhaseDistance();
 
         writeWithCoins = GameObject.Find("WriteWithCoins").GetComponent<WriteWithCoins>();
     }
@@ -138,6 +139,13 @@ public class SpawnObstacles : MonoBehaviour
 
         }
     }
+    private void UpdatePhaseDistance()
+    {
+        if(currentPhase == "Start") phaseDistance = phaseStartDistance;
+        else if(currentPhase == "Coin") phaseDistance = phaseCoinDistance;
+        else if(currentPhase == "Laser") phaseDistance = phaseLaserDistance;
+        else phaseDistance = possiblePhaseDistance;
+    }
     private void ChangePhase()
     {
         do
@@ -148,8 +156,7 @@ public class SpawnObstacles : MonoBehaviour
         isMessageDisplayed = false;
         currentPhase = possiblePhases[currentPhaseIndex];
         currentPhaseXPosition = mainCameraPos.position.x;
-        if(currentPhase != "Coin") phaseDistance = possiblePhaseDistance;
-        else phaseDistance = phaseCoinDistance;
+        UpdatePhaseDistance();
     }
     private void SpawnLaser()
     {

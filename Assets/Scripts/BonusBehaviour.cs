@@ -25,6 +25,6 @@ public class BonusBehaviour : MonoBehaviour
         if(doMoveToPlayer) return;
         doMoveToPlayer = true;
         gameObject.GetComponent<Animator>().SetTrigger("Move");
-        Destroy(gameObject, 3f);
+        Destroy(gameObject, 1f);
     }
 }

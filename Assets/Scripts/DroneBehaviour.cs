@@ -12,11 +12,13 @@ public class DroneBehaviour : MonoBehaviour
     private Transform camPos;
     private Rigidbody2D rb;
     private CircleCollider2D circleCollider2D;
+    private bool isGold = false;
 
     [Header("Shooting")]
     [SerializeField] private float sightRange = 0.5f;
     [SerializeField] private Color[] glowColors;
     [SerializeField] private Color endGlowColor;
+    [SerializeField] private Color endGlowColorGold;
     [SerializeField] private float timeBtwShootColorChange = 0.5f;
     [SerializeField] private float timeBtwShoot = 3f;
     [SerializeField] private GameObject bulletPrefab;
@@ -25,6 +27,8 @@ public class DroneBehaviour : MonoBehaviour
     [SerializeField] private float offsetBtwDroneAndCamera = 7f;
     [SerializeField] private float offsetStartBtwDroneAndCamera = 15f;
     [SerializeField] private float timeBeforeLeavingScreen = 15f;
+    [SerializeField] private GameObject coinPrefab;
+    private int bonusIndex = 0;
     private float timeInFrontOfPlayerBeforeShootingTempo;
     private float timeBtwShootTempo;
     public bool isStarting = true;
@@ -34,6 +38,9 @@ public class DroneBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isGold = Random.Range(0,4) == 0;
+
+
         playerPos = GameObject.Find("Player").transform;
         camPos = Camera.main.transform;
         spriteGlow = GetComponent<SpriteGlow.SpriteGlowEffect>();
@@ -97,8 +104,16 @@ public class DroneBehaviour : MonoBehaviour
         {
             prepareToLeave = false;
             isLeaving = true;
-            spriteGlow.GlowBrightness = 1;
-            spriteGlow.GlowColor = endGlowColor;
+            if(isGold)
+            {
+                spriteGlow.GlowBrightness = 2;
+                spriteGlow.GlowColor = endGlowColorGold;
+            }
+            else
+            {
+                spriteGlow.GlowBrightness = 1;
+                spriteGlow.GlowColor = endGlowColor;
+            }
         }
     }
     private void FollowPlayerYAxis()
@@ -154,10 +169,41 @@ public class DroneBehaviour : MonoBehaviour
     {
         if(isDead) return;
         isDead = true;
+        if(isGold) SpawnBonus();
+        else SpawnCoins();
         droneAnimator.SetTrigger("Die");
         rb.isKinematic = false;
         gameObject.transform.parent = null;
         circleCollider2D.isTrigger = false;
         Destroy(gameObject, 1.5f);
     }
+    private void SpawnCoins()
+    {
+        int nbOfCoins = Random.Range(4,9);
+        for(int i = 0; i < nbOfCoins; i++)
+        {
+            GameObject coin = Instantiate(coinPrefab, transform.position, Quaternion.identity);
+            coin.GetComponent<CircleCollider2D>().enabled = false;
+            coin.GetComponent<Rigidbody2D>().isKinematic = false;
+            coin.GetComponent<Rigidbody2D>().AddTorque(Random.Range(-1f,1f) * 100f);
+            coin.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-1.5f,1.5f), Random.Range(2f,3f)) * 100f);
+            StartCoroutine(WaitBeforeMovingTowardsPlayer(coin));
+        }
+    }
+
+    private void SpawnBonus()
+    {
+        StartCoroutine(GameObject.Find("GameManager").GetComponent<GameManager>().PickUpBonus(Random.Range(0,4), null));
+    }
+
+    private IEnumerator WaitBeforeMovingTowardsPlayer(GameObject coinPrefab)
+    {
+        yield return new WaitForSeconds(0.3f);
+        if(coinPrefab == null) yield break;
+        coinPrefab.GetComponent<CircleCollider2D>().enabled = true;
+        coinPrefab.GetComponent<Rigidbody2D>().isKinematic = true;
+        coinPrefab.GetComponent<CoinBehaviour>().MoveTowardsPlayer();
+        Destroy(coinPrefab, 2f);
+    }
+
 }
