@@ -36,6 +36,12 @@ public class GameManager : MonoBehaviour
     public bool canSpawnBonus = true;
     public bool canSpawnScoreMultiplier = true;
     private bool canUpdateScoreMultiplier = true;
+
+    [Header("Music")]
+    [SerializeField] private GameObject crossMusicImage;
+    [SerializeField] private GameObject crossSoundImage;
+    private AudioManager audioManager;
+    private bool isMusicOn = true;
     void Start()
     {
         if(PlayerPrefs.GetInt("scoreMultiplier", 0) >= maxScoreMultiplier)
@@ -92,6 +98,10 @@ public class GameManager : MonoBehaviour
             obj.SetActive(false);
         }
         isStarted = false;
+        
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        isMusicOn = PlayerPrefs.GetInt("musicOn", 1) == 1 ? true : false;
+        SetMusic();
     }
     private void FixedUpdate() {
         if(isStarted) scoreText.text = (player.transform.position.x*(1+scoreMultiplier)).ToString("0") ;
@@ -176,6 +186,10 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
         UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
     }
     public void PickScoreMultiplier()
     {
@@ -284,5 +298,24 @@ public class GameManager : MonoBehaviour
         isInvincible = false;
         player.GetComponent<PlayerAttack>().isAttacking = false;
         
+    }
+    public void ClickOnMusicButton()
+    {
+        isMusicOn = !isMusicOn;
+        PlayerPrefs.SetInt("musicOn", isMusicOn ? 1 : 0);
+        SetMusic();
+    }
+    private void SetMusic()
+    {
+        if(isMusicOn)
+        {
+            audioManager.OnOffMusic(true);
+            crossMusicImage.SetActive(false);
+        }
+        else
+        {
+            audioManager.OnOffMusic(false);
+            crossMusicImage.SetActive(true);
+        }
     }
 }
