@@ -63,7 +63,7 @@ public class MonsterSpawner : MonoBehaviour
 
     private void SpawnMonsterBot()
     {
-        GameObject botMonster =Instantiate(monsterPrefab, new Vector3(cameraPos.position.x + 10, ySpawnMonster, 0), Quaternion.identity);
+        GameObject botMonster =Instantiate(monsterPrefab, new Vector3(cameraPos.position.x + 13, ySpawnMonster, 0), Quaternion.identity);
         botMonster.transform.parent = transform;
 
         monsterCountBot++;
@@ -71,7 +71,7 @@ public class MonsterSpawner : MonoBehaviour
     }
     private void SpawnMonsterTop()
     {
-        GameObject topMonster = Instantiate(monsterPrefab, new Vector3(cameraPos.position.x + 10, -ySpawnMonster, 0), Quaternion.identity);
+        GameObject topMonster = Instantiate(monsterPrefab, new Vector3(cameraPos.position.x + 13, -ySpawnMonster, 0), Quaternion.identity);
         topMonster.transform.localScale = new Vector3(topMonster.transform.localScale.x, -topMonster.transform.localScale.y, topMonster.transform.localScale.z);
         topMonster.GetComponent<MonsterBehaviour>().isTop = true;
         topMonster.transform.parent = transform;

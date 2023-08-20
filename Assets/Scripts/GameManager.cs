@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject explosionPrefab;
     [SerializeField] private GameObject poufPrefab;
     [SerializeField] private float distanceBetweenBonus = 300f;
+    private GPGSManager gpgsManager;
     private float lastBonusSpawnedPosition = 0f;
     private TMP_Text scoreMultiplierDisplayText;
     private TMP_Text scoreMultiplierText;
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
         {
             canUpdateScoreMultiplier = false;
         }
+        gpgsManager = GameObject.Find("GPGSManager").GetComponent<GPGSManager>();
 
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
@@ -78,6 +80,7 @@ public class GameManager : MonoBehaviour
         
         player = GameObject.Find("Player");
         startSpeed = player.GetComponent<PlayerMovement>().speed;
+        player.GetComponent<PlayerMovement>().canMove = false;
 
 
         foreach(GameObject obj in showWhenGameOver)
@@ -89,8 +92,6 @@ public class GameManager : MonoBehaviour
             obj.SetActive(false);
         }
         isStarted = false;
-
-        StartCoroutine(PickUpBonus(3, null));
     }
     private void FixedUpdate() {
         if(isStarted) scoreText.text = (player.transform.position.x*(1+scoreMultiplier)).ToString("0") ;
@@ -138,6 +139,7 @@ public class GameManager : MonoBehaviour
     }
     public void GameOver()
     {
+        gpgsManager.ReportHighScore(int.Parse(scoreText.text));
         if(int.Parse(scoreText.text) > highScore)
         {
             PlayerPrefs.SetInt("highScore", int.Parse(scoreText.text));
@@ -167,6 +169,8 @@ public class GameManager : MonoBehaviour
         player.transform.position = new Vector3(0, -4f, 0);
         player.GetComponent<PlayerMovement>().speed = startSpeed;
         Camera.main.transform.position = new Vector3(2, 0, -10);
+
+        player.GetComponent<PlayerMovement>().canMove = true;
     }
     public void RestartGame()
     {

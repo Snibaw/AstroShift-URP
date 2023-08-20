@@ -9,6 +9,7 @@ public class MonsterBehaviour : MonoBehaviour
     private bool isJumping = false;
     private Transform cameraPosition;
     [SerializeField] private float movementSpeedMultiplier = 0.5f;
+    [SerializeField] private GameObject deathAnimationPrefab;
     private GameObject player;
     private float speed;
     private Animator animator;
@@ -85,6 +86,8 @@ public class MonsterBehaviour : MonoBehaviour
         animator.SetTrigger("Die");
         if(isJumpKill)
         {
+            Instantiate(deathAnimationPrefab, transform.position, Quaternion.Euler(0, 0, 0));
+            
             GameObject[] listMonsters = GameObject.FindGameObjectsWithTag("Monster");
 
             foreach(GameObject monster in listMonsters)

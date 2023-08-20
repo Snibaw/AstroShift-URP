@@ -134,9 +134,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6209213285368894548}
   - component: {fileID: 6209213285368894555}
+  - component: {fileID: 6209213285368894552}
   - component: {fileID: 6209213285368894554}
   - component: {fileID: 6209213285368894553}
-  - component: {fileID: 6209213285368894552}
   - component: {fileID: 6209213285368894549}
   m_Layer: 0
   m_Name: Monster1
@@ -213,6 +213,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6209213285368894552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6209213285368894559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7caf8676a3cf8894d82f5caac661a0ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angryColor: {r: 1, g: 0.025896862, b: 0, a: 1}
+  happyColor: {r: 0.9014578, g: 0, b: 1, a: 1}
+  movementSpeedMultiplier: 0.5
+  deathAnimationPrefab: {fileID: 5985634496115995773, guid: 463cf9f7af4680240898f6aeba3fe3e6, type: 3}
+  isAngry: 0
+  isHappy: 0
+  isTop: 0
 --- !u!114 &6209213285368894554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,23 +270,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!114 &6209213285368894552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6209213285368894559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7caf8676a3cf8894d82f5caac661a0ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  angryColor: {r: 1, g: 0.025896862, b: 0, a: 1}
-  happyColor: {r: 0.9014578, g: 0, b: 1, a: 1}
-  movementSpeedMultiplier: 0.5
-  isAngry: 0
-  isHappy: 0
 --- !u!61 &6209213285368894549
 BoxCollider2D:
   m_ObjectHideFlags: 0
