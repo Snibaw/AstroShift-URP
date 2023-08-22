@@ -42,6 +42,9 @@ public class DroneBehaviour : MonoBehaviour
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
+        spriteGlow = GetComponent<SpriteGlow.SpriteGlowEffect>();
+        spriteGlow.GlowColor = new Color(0,0,0,0);
+
         if(gameManager.canSpawnBonus)
         {
             float probability = gameManager.canSpawnBonus ? probabilityToSpawnBonus*4 : probabilityToSpawnBonus;
@@ -49,13 +52,12 @@ public class DroneBehaviour : MonoBehaviour
             {
                 gameManager.BonusHasBeenSpawned();
                 isGold = true;
+                spriteGlow.GlowColor = endGlowColorGold;
             }
         }
 
         playerPos = GameObject.Find("Player").transform;
         camPos = Camera.main.transform;
-        spriteGlow = GetComponent<SpriteGlow.SpriteGlowEffect>();
-        spriteGlow.GlowColor = new Color(0,0,0,0);
 
         droneAnimator = GetComponent<Animator>();
         timeBtwShootTempo = 0;

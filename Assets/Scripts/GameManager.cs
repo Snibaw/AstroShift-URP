@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject explosionPrefab;
     [SerializeField] private GameObject poufPrefab;
     [SerializeField] private float distanceBetweenBonus = 300f;
+    [SerializeField] private GameObject quitPannel;
     private GPGSManager gpgsManager;
     private float lastBonusSpawnedPosition = 0f;
     private TMP_Text scoreMultiplierDisplayText;
@@ -42,8 +43,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject crossSoundImage;
     private AudioManager audioManager;
     private bool isMusicOn = true;
+    private bool isSoundEffectOn = true;
+
+    [Header("Sounds")]
+    [SerializeField] private AudioClip clickButtonSound;
     void Start()
     {
+        player = GameObject.Find("Player");
+        startSpeed = player.GetComponent<PlayerMovement>().speed;
+        player.GetComponent<PlayerMovement>().canMove = false;
+
         if(PlayerPrefs.GetInt("scoreMultiplier", 0) >= maxScoreMultiplier)
         {
             canUpdateScoreMultiplier = false;
@@ -60,7 +69,7 @@ public class GameManager : MonoBehaviour
         scoreMultiplierText.text = scoreMultiplier.ToString("00");
 
         scoreMultiplierDisplayText = GameObject.Find("ScoreMultiplierDisplayText").GetComponent<TMP_Text>();
-        scoreMultiplierDisplayText.text = "x"+Mathf.Min(30,(scoreMultiplier+1)).ToString("00");
+        scoreMultiplierDisplayText.text = "x"+Mathf.Min(30,(scoreMultiplier)).ToString("00");
 
         ratioMultiplierText = GameObject.Find("RatioMultiplier").GetComponent<TMP_Text>();
         ratioMultiplierText.text = (scoreMultiplier).ToString("00")+"/"+maxScoreMultiplier.ToString("00");
@@ -83,10 +92,6 @@ public class GameManager : MonoBehaviour
         {
             Instantiate(highScoreFlagPrefab, new Vector3(highScore, -3.38f, 0), Quaternion.identity);
         }
-        
-        player = GameObject.Find("Player");
-        startSpeed = player.GetComponent<PlayerMovement>().speed;
-        player.GetComponent<PlayerMovement>().canMove = false;
 
 
         foreach(GameObject obj in showWhenGameOver)
@@ -102,6 +107,11 @@ public class GameManager : MonoBehaviour
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         isMusicOn = PlayerPrefs.GetInt("musicOn", 1) == 1 ? true : false;
         SetMusic();
+
+        isSoundEffectOn = PlayerPrefs.GetInt("soundEffectOn", 1) == 1 ? true : false;
+        SetSoundEffect();
+
+        quitPannel.SetActive(false);
     }
     private void FixedUpdate() {
         if(isStarted) scoreText.text = (player.transform.position.x*(1+scoreMultiplier)).ToString("0") ;
@@ -115,6 +125,7 @@ public class GameManager : MonoBehaviour
 
     public void BonusHasBeenSpawned()
     {
+        if( player == null) player = GameObject.Find("Player");
         lastBonusSpawnedPosition = player.transform.position.x;
         canSpawnBonus = false;
     }
@@ -184,11 +195,23 @@ public class GameManager : MonoBehaviour
     }
     public void RestartGame()
     {
+        PlayButtonSound();
         Time.timeScale = 1;
         UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
+    public void OpenQuitPannel()
+    {
+        PlayButtonSound();
+        quitPannel.SetActive(true);
+    }
+    public void CloseQuitPannel()
+    {
+        PlayButtonSound();
+        quitPannel.SetActive(false);
+    }
     public void QuitGame()
     {
+        PlayButtonSound();
         Application.Quit();
     }
     public void PickScoreMultiplier()
@@ -211,8 +234,10 @@ public class GameManager : MonoBehaviour
         scoreMultiplierText.gameObject.GetComponent<Animator>().SetTrigger("On");
         yield return new WaitForSeconds(0.3f);
         scoreMultiplierText.text = scoreMultiplier.ToString("00");
+        scoreMultiplierDisplayText.text = "x"+Mathf.Min(30,(scoreMultiplier)).ToString("00");
         yield return new WaitForSeconds(3f);
         backGroundScoreMultiplier.GetComponent<Animator>().SetTrigger("Off");
+
     }
     public IEnumerator PickUpBonus(int bonusIndex, BonusBehaviour bonus)
     {
@@ -235,7 +260,7 @@ public class GameManager : MonoBehaviour
         GameObject[] chainObstacles = GameObject.FindGameObjectsWithTag("Chain");
         foreach(GameObject obstacle in chainObstacles)
         {
-            DoAnimationSuspendedWall(obstacle.transform.parent.gameObject, giveBonus: false);
+            DoAnimationSuspendedWall(obstacle.transform.parent.gameObject, giveBonus: true);
         }
 
         //Search obstacles where the first 11 caracters are : "Square Group"
@@ -262,14 +287,25 @@ public class GameManager : MonoBehaviour
     }
     public void DoAnimationSuspendedWall(GameObject parentObject, bool giveBonus = true)
     {
+        //Parent is SuspendedWall2
+        SpikeObstacleSpawnCoin SquarePartComponent = parentObject.transform.GetChild(0).GetComponent<SpikeObstacleSpawnCoin>();
+
+        if(SquarePartComponent.HasBeenDestroyed) return;
+        SquarePartComponent.HasBeenDestroyed = true;
+
+        if(!SquarePartComponent.HasBonusBeenPickedUp) 
+        {
+            SquarePartComponent.CheckIfBonus();
+        }
+        else if(!SquarePartComponent.HasScoreMultiplierBeenPickedUp)
+        {
+            PickScoreMultiplier();
+            SquarePartComponent.HasScoreMultiplierBeenPickedUp = true;
+        }
         foreach(Rigidbody2D rb2D in parentObject.GetComponentsInChildren<Rigidbody2D>())
         {
             if(rb2D.gameObject.name == "Triangle") rb2D.gameObject.GetComponent<SpikeObstacle>().isDestroyed = true;
-            if(rb2D.gameObject.CompareTag("ScoreMultiplier") && giveBonus) // Destroy the score multiplier and add score
-            {
-                Destroy(rb2D.gameObject,1f);
-                GameObject.Find("GameManager").GetComponent<GameManager>().PickScoreMultiplier();
-            }
+
             rb2D.constraints = RigidbodyConstraints2D.None;
             rb2D.gravityScale = 1;
             //Add random force to every object
@@ -299,23 +335,46 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerAttack>().isAttacking = false;
         
     }
+    public void PlayButtonSound()
+    {
+        audioManager.PlaySoundEffect(clickButtonSound);
+    }
     public void ClickOnMusicButton()
     {
+        
         isMusicOn = !isMusicOn;
         PlayerPrefs.SetInt("musicOn", isMusicOn ? 1 : 0);
         SetMusic();
+        PlayButtonSound();
     }
     private void SetMusic()
     {
+        crossMusicImage.SetActive(!isMusicOn);
+
         if(isMusicOn)
         {
-            audioManager.OnOffMusic(true);
-            crossMusicImage.SetActive(false);
+            if(!audioManager.isPlaying)
+            {
+                audioManager.OnOffMusic(true);
+            }
+            
         }
         else
         {
             audioManager.OnOffMusic(false);
-            crossMusicImage.SetActive(true);
         }
+    }
+    public void ClickOnSoundEffectButton()
+    {
+        
+        isSoundEffectOn = !isSoundEffectOn;
+        PlayerPrefs.SetInt("soundEffectOn", isSoundEffectOn ? 1 : 0);
+        SetSoundEffect();
+        PlayButtonSound();
+    }
+    private void SetSoundEffect()
+    {
+        audioManager.isSoundEffectOn = isSoundEffectOn;
+        crossSoundImage.SetActive(!isSoundEffectOn);
     }
 }

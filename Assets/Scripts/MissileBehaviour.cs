@@ -23,17 +23,16 @@ public class MissileBehaviour : MonoBehaviour
         }
     }
     private void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log(other.gameObject.tag);
         if(other.gameObject.CompareTag("Chain"))
         {
-            GameObject.Find("GameManager").GetComponent<GameManager>().DoAnimationSuspendedWall(other.gameObject.transform.parent.gameObject, giveBonus: false);
+            GameObject.Find("GameManager").GetComponent<GameManager>().DoAnimationSuspendedWall(other.gameObject.transform.parent.gameObject, giveBonus: true);
             SpawnExplosionAndDestroy();
         }
         else if(other.gameObject.CompareTag("Obstacle"))
         {
-            if(other.gameObject.transform.parent.name == "SquarePart")
+            if(other.gameObject.name == "SquarePart" || (other.gameObject.transform.parent != null && other.gameObject.transform.parent.name == "SquarePart"))
             {
-                GameObject.Find("GameManager").GetComponent<GameManager>().DoAnimationSuspendedWall(other.gameObject.transform.parent.transform.parent.gameObject, giveBonus: false);
+                GameObject.Find("GameManager").GetComponent<GameManager>().DoAnimationSuspendedWall(other.gameObject.transform.parent.transform.parent.gameObject, giveBonus: true);
                 SpawnExplosionAndDestroy();
             }
             else
@@ -57,6 +56,11 @@ public class MissileBehaviour : MonoBehaviour
                     Destroy(child.gameObject);
                 }
             }
+            SpawnExplosionAndDestroy();
+        }
+        else if(other.gameObject.CompareTag("Drone"))
+        {
+            other.gameObject.GetComponent<DroneBehaviour>().Die();
             SpawnExplosionAndDestroy();
         }
     }

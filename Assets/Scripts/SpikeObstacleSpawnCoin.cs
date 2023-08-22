@@ -18,6 +18,10 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
     private bool doCurrentBonusMoveToPlayer = false;
     private bool isBonusSpawned = false;
     private GameManager gameManager;
+
+    public bool HasScoreMultiplierBeenPickedUp = true;  
+    public bool HasBonusBeenPickedUp = true;
+    public bool HasBeenDestroyed = false;
     
     // Start is called before the first frame update
     void Start()
@@ -49,6 +53,7 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
         float probability = gameManager.canSpawnBonus ? probabilityToSpawnBonus*4 : probabilityToSpawnBonus;
         if(Random.Range(0,100) < probability)
         {
+            
             gameManager.BonusHasBeenSpawned();
             bonusParent.SetActive(true);
             bonusSpawnedIndex = Random.Range(0,bonusList.Length);
@@ -59,6 +64,7 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
             bonusList[bonusSpawnedIndex].SetActive(true);
             currentBonusBehaviour = bonusList[bonusSpawnedIndex].GetComponent<BonusBehaviour>();
             isBonusSpawned = true;
+            HasBonusBeenPickedUp = false;
         }
         else 
         {
@@ -74,6 +80,7 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
         if(Random.Range(0,100) < probabilityToSpawnMonsterScoreMultiplier)
             {
                 monsterScoreMultiplier.SetActive(true);
+                HasScoreMultiplierBeenPickedUp = false;
             }
             else
             {
@@ -92,9 +99,10 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
     }
     public void CheckIfBonus()
     {
-        if(isBonusSpawned)
+        if(isBonusSpawned && !HasBonusBeenPickedUp)
         {
             StartCoroutine(gameManager.PickUpBonus(bonusSpawnedIndex, currentBonusBehaviour));
+            HasBonusBeenPickedUp = true;
         }
     }
 }

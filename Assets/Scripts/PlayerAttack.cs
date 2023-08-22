@@ -29,9 +29,12 @@ public class PlayerAttack : MonoBehaviour
         if(isAttacking) return;
         gameObject.transform.position += new Vector3(0,0.3f,0); //offset Attack Sprites
         isAttacking = true;
-        playerAnim.SetTrigger("Attack");
+        
         if(target.tag == "Chain")
         {
+            SpikeObstacleSpawnCoin SquarePartComponent = target.transform.parent.gameObject.transform.GetChild(0).GetComponent<SpikeObstacleSpawnCoin>();
+            if(SquarePartComponent.HasBeenDestroyed) return;
+            
             // StartCoroutine(AttackChainCoroutine(Random.Range(0,4)==0));
             StartCoroutine(AttackChainCoroutine(false));
         }
@@ -43,6 +46,8 @@ public class PlayerAttack : MonoBehaviour
         {
             StartCoroutine(AttackMonsterKillerCoroutine(target));
         }
+
+        playerAnim.SetTrigger("Attack");
         
     }
     private IEnumerator AttackMonsterKillerCoroutine(GameObject target)
