@@ -154,9 +154,9 @@ MonoBehaviour:
   bulletPrefab: {fileID: 5269243197701211261, guid: d98e10220a9da524c9fe56a795ed2739, type: 3}
   bulletSpeed: 10
   timeInFrontOfPlayerBeforeShooting: 1
-  offsetBtwDroneAndCamera: 8
-  offsetStartBtwDroneAndCamera: 15
-  timeBeforeLeavingScreen: 12
+  offsetBtwDroneAndCamera: 6
+  offsetStartBtwDroneAndCamera: 12
+  timeBeforeLeavingScreen: 8
   coinPrefab: {fileID: 8497500586065604415, guid: 6d217cb6c4b489b47998c60771b27043, type: 3}
   probabilityToSpawnBonus: 20
   isStarting: 1

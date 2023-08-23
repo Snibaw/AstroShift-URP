@@ -8758,8 +8758,9 @@ MonoBehaviour:
   isGrounded: 0
   Jumping: 0
   canMove: 1
-  antiRebondTimerMax: 0.01
+  antiRebondTimerMax: 0.1
   dustPS: {fileID: 185190064}
+  canStayTouching: 0
 --- !u!212 &1030323718
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8928,6 +8929,8 @@ MonoBehaviour:
   - {fileID: 644209008}
   - {fileID: 1799345555}
   - {fileID: 53768837}
+  gravityMultiplierGreenForm: 2
+  scaleMultiplierBlueForm: 0.5
 --- !u!96 &1030323725
 TrailRenderer:
   serializedVersion: 2
@@ -9000,9 +9003,9 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.9490196, b: 0, a: 0.3137255}
-      key1: {r: 1, g: 0.9490196, b: 0, a: 0.078431375}
-      key2: {r: 0, g: 0, b: 0, a: 0.021222934}
+      key0: {r: 1, g: 0.9490196, b: 0, a: 0.3019608}
+      key1: {r: 1, g: 1, b: 1, a: 0.078431375}
+      key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
@@ -9018,7 +9021,7 @@ TrailRenderer:
       ctime7: 0
       atime0: 0
       atime1: 32768
-      atime2: 57247
+      atime2: 65535
       atime3: 65535
       atime4: 0
       atime5: 0
@@ -9026,7 +9029,7 @@ TrailRenderer:
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 4
+      m_NumAlphaKeys: 3
     numCornerVertices: 0
     numCapVertices: 1
     alignment: 0
@@ -12676,10 +12679,13 @@ MonoBehaviour:
   - SuspendedWall
   - Drone
   - Laser
+  - ChangeColor
+  - ChangeColor
   possiblePhaseDistance: 150
   phaseCoinDistance: 100
   phaseStartDistance: 50
   phaseLaserDistance: 80
+  phaseChangeColorDistance: 80
   distanceBetweenPhases: 80
   startPhase: Start
   currentPhase: 0
@@ -12697,6 +12703,16 @@ MonoBehaviour:
   - IM RICH!
   - MY PASSWORD IS
   - 33 RPZ
+  YPortalPosition: 2.3
+  arrowPrefab: {fileID: 8116476693757360726, guid: a09587dfe470e1847b85214c0defc79d, type: 3}
+  distanceBtwArrowAndPortal: 30
+  portalPrefab: {fileID: 5369792349111787384, guid: 5bc77adfb2c39ce4d90b8445f726ebd3, type: 3}
+  colorIndex: 0
+  colors:
+  - {r: 1, g: 0.9490196, b: 0, a: 1}
+  - {r: 0, g: 0.9572072, b: 1, a: 1}
+  - {r: 0, g: 1, b: 0.029511452, a: 1}
+  - {r: 1, g: 0, b: 0.75342274, a: 1}
   coinMessages:
   - WARNING!
   - RUN!!!

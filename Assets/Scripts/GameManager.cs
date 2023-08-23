@@ -51,7 +51,8 @@ public class GameManager : MonoBehaviour
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
-        Screen.SetResolution(1280,720,false);
+        Screen.SetResolution(960,640,true);
+        Camera.main.aspect = 960/640f;
 
 
         player = GameObject.Find("Player");

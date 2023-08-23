@@ -17,7 +17,8 @@ public class PlayerMovement : MonoBehaviour
     private float antiRebondTimer;
     private bool isTouching = false;
     private bool wasTouching = false;
-    
+    public bool canStayTouching = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,8 +47,9 @@ public class PlayerMovement : MonoBehaviour
             isTouching = false;
         }
 
-        //If the player press left click make the gravity change
-        if ((Input.GetMouseButtonDown(0) && antiRebondTimer <= 0) || (isTouching && !wasTouching))
+        //If the player press left click or touch screen make the gravity change
+        // The canStayTouching avoid the player to spam the button and make the character stay on the same y position (except if blue form) 
+        if ((Input.GetMouseButtonDown(0) && antiRebondTimer <= 0) || (isTouching && ((antiRebondTimer <= 0 && canStayTouching) || !wasTouching)))
         {
             if(isGrounded) CreateDust(1);
             antiRebondTimer = antiRebondTimerMax;

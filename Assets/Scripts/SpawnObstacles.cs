@@ -13,6 +13,7 @@ public class SpawnObstacles : MonoBehaviour
     [SerializeField] private float phaseCoinDistance = 0f;
     [SerializeField] private float phaseStartDistance = 0f;
     [SerializeField] private float phaseLaserDistance = 0f;
+    [SerializeField] private float phaseChangeColorDistance = 0f;
     [SerializeField] private float distanceBetweenPhases = 0f;
     [SerializeField] private string startPhase;
     private float phaseDistance = 0f;
@@ -25,6 +26,16 @@ public class SpawnObstacles : MonoBehaviour
     [Header("Start")]
     [SerializeField] private string[] startMessages;
     private WriteWithCoins writeWithCoins;
+
+    [Header("------------------------")]
+    [Header("ChangeColor")]
+    [SerializeField] private float YPortalPosition = 2.3f;
+    [SerializeField] private GameObject arrowPrefab;
+    [SerializeField] private float distanceBtwArrowAndPortal= 30f;
+    [SerializeField] private GameObject portalPrefab;
+    private bool isPortalSpawned = false;
+    public int colorIndex = 0;
+    public Color[] colors;
 
     [Header("------------------------")]
     [Header("Coin")]
@@ -77,6 +88,8 @@ public class SpawnObstacles : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        colorIndex = 0;
+
         playerPos = GameObject.Find("Player").transform;
         mainCameraPos = Camera.main.transform;
         distanceSinceLastSquare = squareMinDistance;
@@ -114,6 +127,12 @@ public class SpawnObstacles : MonoBehaviour
                     isMessageDisplayed = true;
                 }
                 break;
+            case "ChangeColor":
+                if(!isPortalSpawned)
+                {
+                    SpawnPortal();
+                }
+                break;
             case "Coin":
                 if(!isMessageDisplayed)
                 {
@@ -144,6 +163,7 @@ public class SpawnObstacles : MonoBehaviour
         if(currentPhase == "Start") phaseDistance = phaseStartDistance;
         else if(currentPhase == "Coin") phaseDistance = phaseCoinDistance;
         else if(currentPhase == "Laser") phaseDistance = phaseLaserDistance;
+        else if(currentPhase == "ChangeColor") phaseDistance = phaseChangeColorDistance;
         else phaseDistance = possiblePhaseDistance;
     }
     private void ChangePhase()
@@ -154,9 +174,60 @@ public class SpawnObstacles : MonoBehaviour
         } while (possiblePhases[currentPhaseIndex] == currentPhase);
 
         isMessageDisplayed = false;
+        isPortalSpawned = false;
         currentPhase = possiblePhases[currentPhaseIndex];
         currentPhaseXPosition = mainCameraPos.position.x;
         UpdatePhaseDistance();
+    }
+    private void SpawnPortal()
+    {
+        isPortalSpawned = true;
+        //Choose 2 colors different from the current one
+        Color[] colorsToChooseFrom = new Color[colors.Length - 1];
+        int index = 0;
+        for(int i = 0; i < colors.Length; i++)
+        {
+            if(colors[i] != colors[colorIndex])
+            {
+                colorsToChooseFrom[index] = colors[i];
+                index++;
+            }
+        }
+        //Choose the first color
+        Color[] colorsToUse = new Color[2];
+        colorsToUse[0] = colorsToChooseFrom[Random.Range(0, colorsToChooseFrom.Length)];
+        
+        //Choose the second color
+        colorsToChooseFrom = new Color[colors.Length - 2];
+        index = 0;
+        for(int i = 0; i < colors.Length; i++)
+        {
+            if(colors[i] != colors[colorIndex] && colors[i] != colorsToUse[0])
+            {
+                colorsToChooseFrom[index] = colors[i];
+                index++;
+            }
+        }
+        colorsToUse[1] = colorsToChooseFrom[Random.Range(0, colorsToChooseFrom.Length)];
+
+        //Spawn the arrow
+        Vector3 arrowSpawnPosition1 = new Vector3(mainCameraPos.position.x + 15, YPortalPosition, 0);
+        Vector3 arrowSpawnPosition2 = new Vector3(mainCameraPos.position.x + 15, -YPortalPosition, 0);
+
+        GameObject arrow1 = Instantiate(arrowPrefab, arrowSpawnPosition1, Quaternion.identity);
+        GameObject arrow2 = Instantiate(arrowPrefab, arrowSpawnPosition2, Quaternion.identity);
+
+        arrow1.GetComponent<ArrowBehaviour>().ChangeGlowColor(colorsToUse[0]);
+        arrow2.GetComponent<ArrowBehaviour>().ChangeGlowColor(colorsToUse[1]);
+
+        //Spawn Portals
+        GameObject portal1 = Instantiate(portalPrefab, arrowSpawnPosition1 + new Vector3(distanceBtwArrowAndPortal, 0, 0), Quaternion.identity);
+        GameObject portal2 = Instantiate(portalPrefab, arrowSpawnPosition2 + new Vector3(distanceBtwArrowAndPortal, 0, 0), Quaternion.identity);
+
+        portal1.GetComponent<PortalBehaviour>().ChangeColor(colorsToUse[0]);
+        portal2.GetComponent<PortalBehaviour>().ChangeColor(colorsToUse[1]);
+
+        
     }
     private void SpawnLaser()
     {
@@ -164,7 +235,7 @@ public class SpawnObstacles : MonoBehaviour
 
         if(distanceSinceLastLaser >= laserMinDistance)
         {
-            laserSpawnPosition = new Vector3(Mathf.Min(currentPhaseXPosition + phaseDistance , mainCameraPos.position.x + Random.Range(laserMinDistance, laserMaxDistance)), 0, 0);
+            laserSpawnPosition = new Vector3(Mathf.Min(currentPhaseXPosition + phaseDistance + 12f , mainCameraPos.position.x + Random.Range(laserMinDistance, laserMaxDistance)), 0, 0);
             GameObject laser = Instantiate(laserPrefab, laserSpawnPosition, Quaternion.identity);
             laser.transform.parent = transform;
             cameraPosWhenLastLaserSpawned = mainCameraPos.position;
@@ -200,7 +271,7 @@ public class SpawnObstacles : MonoBehaviour
         if(distanceSinceLastSuspendedWall >= suspendedWallMinDistance)
             {
                 int indexWall = Random.Range(0, suspendedWallPrefab.Length);
-                suspendedWallSpawnPosition = new Vector3(Mathf.Min(currentPhaseXPosition + phaseDistance, mainCameraPos.position.x + Random.Range(suspendedWallMinDistance, suspendedWallMaxDistance)), 0, 0);
+                suspendedWallSpawnPosition = new Vector3(Mathf.Min(currentPhaseXPosition + phaseDistance + 12f, mainCameraPos.position.x + Random.Range(suspendedWallMinDistance, suspendedWallMaxDistance)), 0, 0);
                 GameObject suspendedWall = Instantiate(suspendedWallPrefab[indexWall], suspendedWallSpawnPosition, Quaternion.identity);
                 suspendedWall.transform.parent = transform;
                 cameraPosWhenLastSuspendedWallSpawned = mainCameraPos.position;
@@ -214,7 +285,7 @@ public class SpawnObstacles : MonoBehaviour
         if(distanceSinceLastSquare >= squareMinDistance)
         {
             int indexYPosition = DetermineYPositionSquare();
-            squareSpawnPosition = new Vector3(Mathf.Min(currentPhaseXPosition + phaseDistance, mainCameraPos.position.x + Random.Range(squareMinDistance, squareMaxDistance)), possibleYPositions[indexYPosition], 0);
+            squareSpawnPosition = new Vector3(Mathf.Min(currentPhaseXPosition + phaseDistance + 12f, mainCameraPos.position.x + Random.Range(squareMinDistance, squareMaxDistance)), possibleYPositions[indexYPosition], 0);
             GameObject square = Instantiate(squarePrefab, squareSpawnPosition, Quaternion.identity);
             square.transform.parent = transform;
             cameraPosWhenLastSquareSpawned = mainCameraPos.position;
