@@ -13,9 +13,11 @@ public class PlayerMovement : MonoBehaviour
     private bool dontCheckIfGrounded = false;
     public bool canMove = true;
     [SerializeField] private float antiRebondTimerMax = 0.01f;
+    [SerializeField] private ParticleSystem dustPS;
     private float antiRebondTimer;
     private bool isTouching = false;
     private bool wasTouching = false;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
         //If the player press left click make the gravity change
         if ((Input.GetMouseButtonDown(0) && antiRebondTimer <= 0) || (isTouching && !wasTouching))
         {
+            if(isGrounded) CreateDust(1);
             antiRebondTimer = antiRebondTimerMax;
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.gravityScale = -rb.gravityScale;
@@ -83,6 +86,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Jumping = false;
             playerAnimator.SetBool("Jumping", false);
+            CreateDust();
         }
     }
     private void FlipSprite()
@@ -95,5 +99,16 @@ public class PlayerMovement : MonoBehaviour
     {
         Jumping = true;
         playerAnimator.SetBool("Jumping", true);
+    }
+    private void CreateDust(float yVelocity = 0.2f)
+    {
+        if(transform.position.y > 0) yVelocity = -yVelocity; // If the player is upside down, make the dust go down
+
+        var velocityOverLifetime = dustPS.velocityOverLifetime;
+        velocityOverLifetime.y = yVelocity;
+
+
+
+        dustPS.Play();
     }
 }

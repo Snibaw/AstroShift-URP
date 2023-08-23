@@ -49,6 +49,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioClip clickButtonSound;
     void Start()
     {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
+        Screen.SetResolution(1280,720,false);
+
+
         player = GameObject.Find("Player");
         startSpeed = player.GetComponent<PlayerMovement>().speed;
         player.GetComponent<PlayerMovement>().canMove = false;
@@ -59,8 +64,7 @@ public class GameManager : MonoBehaviour
         }
         gpgsManager = GameObject.Find("GPGSManager").GetComponent<GPGSManager>();
 
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+        
 
         bonusContainer = GameObject.Find("BonusContainer").GetComponent<BonusContainer>();
 
