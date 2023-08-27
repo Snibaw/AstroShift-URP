@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject poufPrefab;
     [SerializeField] private float distanceBetweenBonus = 300f;
     [SerializeField] private GameObject quitPannel;
+    [Header("Shop")]
+    [SerializeField] private GameObject shopPannel;
+    [SerializeField] private GameObject[] shopContent;
     private GPGSManager gpgsManager;
     private float lastBonusSpawnedPosition = 0f;
     private TMP_Text scoreMultiplierDisplayText;
@@ -51,9 +54,8 @@ public class GameManager : MonoBehaviour
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
-        Screen.SetResolution(960,640,true);
-        Camera.main.aspect = 960/640f;
-
+        // Screen.SetResolution(1280,720,true);
+        // Camera.main.aspect = 960/640f;
 
         player = GameObject.Find("Player");
         startSpeed = player.GetComponent<PlayerMovement>().speed;
@@ -88,7 +90,7 @@ public class GameManager : MonoBehaviour
         scoreText.text = "0";
 
         coinText = GameObject.Find("coinText").GetComponent<TMP_Text>();
-        coinText.text = "0";
+        coinText.text = PlayerPrefs.GetString("Coin", "0");
 
         highScoreText = GameObject.Find("highScoreText").GetComponent<TMP_Text>();
         highScore = PlayerPrefs.GetInt("highScore", 0);
@@ -117,6 +119,9 @@ public class GameManager : MonoBehaviour
         SetSoundEffect();
 
         quitPannel.SetActive(false);
+
+        ShowContent(0);
+        shopPannel.SetActive(false);
     }
     private void FixedUpdate() {
         if(isStarted) scoreText.text = (player.transform.position.x*(1+scoreMultiplier)).ToString("0") ;
@@ -124,6 +129,14 @@ public class GameManager : MonoBehaviour
         if(lastBonusSpawnedPosition + distanceBetweenBonus < player.transform.position.x)
         {
             canSpawnBonus = true;
+        }
+        if(Application.isEditor)
+        {
+            if(Input.GetKeyDown(KeyCode.C))
+            {
+                PlayerPrefs.SetString("Coin", (long.Parse(PlayerPrefs.GetString("Coin", "0")) + 100000).ToString());
+                coinText.text = PlayerPrefs.GetString("Coin", "0");
+            }
         }
 
     }
@@ -175,6 +188,7 @@ public class GameManager : MonoBehaviour
         {
             obj.SetActive(true);
         }
+        PlayerPrefs.SetString("Coin", (long.Parse(PlayerPrefs.GetString("Coin", "0")) + coin).ToString());
     }
     public void EarnCoin(int coinValue = 1)
     {
@@ -197,6 +211,8 @@ public class GameManager : MonoBehaviour
         Camera.main.transform.position = new Vector3(2, 0, -10);
 
         player.GetComponent<PlayerMovement>().canMove = true;
+
+        coinText.text = "0";
     }
     public void RestartGame()
     {
@@ -381,5 +397,46 @@ public class GameManager : MonoBehaviour
     {
         audioManager.isSoundEffectOn = isSoundEffectOn;
         crossSoundImage.SetActive(!isSoundEffectOn);
+    }
+    public void OpenShopPannel()
+    {
+        PlayButtonSound();
+        shopPannel.SetActive(true);
+        shopPannel.GetComponent<Animator>().SetTrigger("Open");
+    }
+    public void CloseShopPannel()
+    {
+        PlayButtonSound();
+        shopPannel.GetComponent<Animator>().SetTrigger("Close");
+        StartCoroutine(DesactiveShopPannelAfterAnimation());
+    }
+    private IEnumerator DesactiveShopPannelAfterAnimation()
+    {
+        yield return new WaitForSeconds(0.75f);
+        shopPannel.SetActive(false);
+    }
+    public void ShowContent(int i)
+    {
+        PlayButtonSound();
+        foreach(GameObject obj in shopContent)
+        {
+            obj.SetActive(false);
+        }
+        shopContent[i].SetActive(true);
+    }
+    public bool BuyUpgrade(long price)
+    {
+        long totalCoin = long.Parse(coinText.text);
+        if(totalCoin >= price)
+        {
+            totalCoin -= price;
+            coinText.text = totalCoin.ToString();
+            PlayerPrefs.SetString("Coin", totalCoin.ToString());
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
