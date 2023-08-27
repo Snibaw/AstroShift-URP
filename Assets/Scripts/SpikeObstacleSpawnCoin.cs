@@ -8,8 +8,8 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
     [SerializeField] private GameObject[] coinPrefab;
     [SerializeField] private float[] coinTransformY;
     [SerializeField] private GameObject monsterScoreMultiplier;
-    [SerializeField] private float probabilityToSpawnMonsterScoreMultiplier;
-    [SerializeField] private float probabilityToSpawnBonus;
+    private float probabilityToSpawnMonsterScoreMultiplier;
+    private float probabilityToSpawnBonus;
     [SerializeField] private GameObject[] bonusList;
     [SerializeField] private GameObject bonusParent;
     private int bonusSpawnedIndex = 0;
@@ -26,6 +26,9 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        probabilityToSpawnMonsterScoreMultiplier = PlayerPrefs.GetFloat("SC_SpawnRateValue",0f);
+        probabilityToSpawnBonus = PlayerPrefs.GetFloat("IT_SpawnRateValue",0f);
+
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         if(canSpawnBonus)
@@ -50,7 +53,7 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
     }
     private void SpawnBonus()
     {
-        float probability = gameManager.canSpawnBonus ? probabilityToSpawnBonus*4 : probabilityToSpawnBonus;
+        float probability = gameManager.canSpawnBonus ? probabilityToSpawnBonus*3 : probabilityToSpawnBonus;
         if(Random.Range(0,100) < probability)
         {
             
@@ -73,12 +76,11 @@ public class SpikeObstacleSpawnCoin : MonoBehaviour
     }
     private void SpawnMonsterScoreMultiplier()
     {
-        gameManager.canSpawnScoreMultiplier = false;
-
         if(PlayerPrefs.GetInt("scoreMultiplier", 0) >= 30) return;
 
         if(Random.Range(0,100) < probabilityToSpawnMonsterScoreMultiplier)
             {
+                gameManager.canSpawnScoreMultiplier = false;
                 monsterScoreMultiplier.SetActive(true);
                 HasScoreMultiplierBeenPickedUp = false;
             }

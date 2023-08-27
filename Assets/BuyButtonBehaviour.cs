@@ -30,6 +30,8 @@ public class BuyButtonBehaviour : MonoBehaviour
         augmentText = transform.GetChild(2).GetComponent<TMP_Text>();   
 
         UpdateValuesAndText();
+
+        SetPlayerPrefsIfNotExists();
         
     }
     private void UpdateValuesAndText()
@@ -80,6 +82,19 @@ public class BuyButtonBehaviour : MonoBehaviour
         priceText.text = "Not enough money";
         yield return new WaitForSeconds(1f);
         priceText.text = price.ToString();
+    }
+
+    private void SetPlayerPrefsIfNotExists()
+    {
+        if(!PlayerPrefs.HasKey(playerPrefBaseName + "Price"))
+        {
+            PlayerPrefs.SetInt(playerPrefBaseName + "Price", priceBV);
+            PlayerPrefs.SetFloat(playerPrefBaseName + "PriceAugment", priceAugmentBV);
+            PlayerPrefs.SetInt(playerPrefBaseName + "Level", levelBV);
+            PlayerPrefs.SetFloat(playerPrefBaseName + "Value", actualValueBV);
+            PlayerPrefs.SetFloat(playerPrefBaseName + "ValueAddition", valueAdditionBV);
+            PlayerPrefs.SetFloat(playerPrefBaseName + "ValueAugment", valueAugmentBV);
+        }
     }
 
 }

@@ -28,7 +28,7 @@ public class DroneBehaviour : MonoBehaviour
     [SerializeField] private float offsetStartBtwDroneAndCamera = 15f;
     [SerializeField] private float timeBeforeLeavingScreen = 15f;
     [SerializeField] private GameObject coinPrefab;
-    [SerializeField] private float probabilityToSpawnBonus = 20f;
+    private float probabilityToSpawnBonus = 20f;
     private int bonusIndex = 0;
     private float timeInFrontOfPlayerBeforeShootingTempo;
     private float timeBtwShootTempo;
@@ -40,6 +40,8 @@ public class DroneBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        probabilityToSpawnBonus = PlayerPrefs.GetFloat("IT_SpawnRateValue",0f);
+
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         spriteGlow = GetComponent<SpriteGlow.SpriteGlowEffect>();
@@ -47,7 +49,7 @@ public class DroneBehaviour : MonoBehaviour
 
         if(gameManager.canSpawnBonus)
         {
-            float probability = gameManager.canSpawnBonus ? probabilityToSpawnBonus*4 : probabilityToSpawnBonus;
+            float probability = gameManager.canSpawnBonus ? probabilityToSpawnBonus*3 : probabilityToSpawnBonus;
             if(Random.Range(0,100) < probability)
             {
                 gameManager.BonusHasBeenSpawned();
