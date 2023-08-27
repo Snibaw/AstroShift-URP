@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.C))
             {
-                PlayerPrefs.SetString("Coin", (long.Parse(PlayerPrefs.GetString("Coin", "0")) + 100000).ToString());
+                PlayerPrefs.SetString("Coin", (long.Parse(PlayerPrefs.GetString("Coin", "0")) + 10000000).ToString());
                 coinText.text = PlayerPrefs.GetString("Coin", "0");
             }
         }
@@ -188,7 +188,7 @@ public class GameManager : MonoBehaviour
         {
             obj.SetActive(true);
         }
-        PlayerPrefs.SetString("Coin", (long.Parse(PlayerPrefs.GetString("Coin", "0")) + coin).ToString());
+        PlayerPrefs.SetString("Coin", (long.Parse(PlayerPrefs.GetString("Coin", "0")) + Mathf.Ceil(coin*PlayerPrefs.GetFloat("IT_MoneyMultiplierValue"))).ToString());
     }
     public void EarnCoin(int coinValue = 1)
     {

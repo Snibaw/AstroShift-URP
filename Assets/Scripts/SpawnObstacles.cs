@@ -258,7 +258,7 @@ public class SpawnObstacles : MonoBehaviour
     {
         for(int i = 0; i < numberOfDrones; i++)
         {
-            droneSpawnPosition = new Vector3(mainCameraPos.position.x+10, 0, 0);
+            droneSpawnPosition = new Vector3(mainCameraPos.position.x+20, 0, 0);
             GameObject drone = Instantiate(dronePrefab, droneSpawnPosition, Quaternion.identity);
             drone.transform.parent = mainCameraPos.transform;
             yield return new WaitForSeconds(Random.Range(1f, 3f));

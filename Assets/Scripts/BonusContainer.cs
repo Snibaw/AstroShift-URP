@@ -13,6 +13,10 @@ public class BonusContainer : MonoBehaviour
     private void Start() {
         player = GameObject.Find("Player");
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        timeBonusElement[1] = PlayerPrefs.GetFloat("SH_DurationValue",0f);
+        timeBonusElement[2] = PlayerPrefs.GetFloat("MA_DurationValue",0f);
+        timeBonusElement[3] = PlayerPrefs.GetFloat("MI_DurationValue",0f);
     }
     public void AddBonusElement(int bonusIndex)
     {        

@@ -11,6 +11,7 @@ public class MissileSpawner : MonoBehaviour
     void Start()
     {
         timeBeforeNextMissile = 0;
+        timeBetweenMissiles = PlayerPrefs.GetFloat("MI_FireRateValue",0f);
     }
 
     // Update is called once per frame
