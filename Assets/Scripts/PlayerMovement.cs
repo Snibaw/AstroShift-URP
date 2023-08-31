@@ -18,6 +18,9 @@ public class PlayerMovement : MonoBehaviour
     private bool isTouching = false;
     private bool wasTouching = false;
     public bool canStayTouching = false;
+    private float timeStayedTouching = 0f;
+    public float timeStayTouchingMin = 0.5f;
+    private bool specialCaseChangeGravity = false;
 
     // Start is called before the first frame update
     void Start()
@@ -45,11 +48,23 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             isTouching = false;
+            timeStayedTouching = 0f;
+        }
+
+        specialCaseChangeGravity = false;
+        //Avoid double jump
+        // The canStayTouching avoid the player to spam the button and make the character stay on the same y position (except if blue form) 
+        if(isTouching && canStayTouching)
+        {
+            timeStayedTouching += Time.deltaTime;
+            if(timeStayedTouching > timeStayTouchingMin)
+            {
+                specialCaseChangeGravity = true;
+            }
         }
 
         //If the player press left click or touch screen make the gravity change
-        // The canStayTouching avoid the player to spam the button and make the character stay on the same y position (except if blue form) 
-        if ((Input.GetMouseButtonDown(0) && antiRebondTimer <= 0) || (isTouching && ((antiRebondTimer <= 0 && canStayTouching) || !wasTouching)))
+        if ((Input.GetMouseButtonDown(0) && antiRebondTimer <= 0) || (isTouching && ((specialCaseChangeGravity && antiRebondTimer <=0) || !wasTouching)))
         {
             if(isGrounded) CreateDust(1);
             antiRebondTimer = antiRebondTimerMax;
