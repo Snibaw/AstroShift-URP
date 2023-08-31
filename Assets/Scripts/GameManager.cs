@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     [Header("Shop")]
     [SerializeField] private GameObject shopPannel;
     [SerializeField] private GameObject[] shopContent;
+    [SerializeField] private GameObject pauseMenu;
     private GPGSManager gpgsManager;
     private float lastBonusSpawnedPosition = 0f;
     private TMP_Text scoreMultiplierDisplayText;
@@ -54,9 +55,10 @@ public class GameManager : MonoBehaviour
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
-        // Screen.SetResolution(1280,720,true);
+        Screen.SetResolution(1280,720,true);
         // Camera.main.aspect = 960/640f;
 
+        pauseMenu.SetActive(false);
         player = GameObject.Find("Player");
         startSpeed = player.GetComponent<PlayerMovement>().speed;
         player.GetComponent<PlayerMovement>().canMove = false;
@@ -140,7 +142,18 @@ public class GameManager : MonoBehaviour
         }
 
     }
-
+    public void ShowPauseMenu()
+    {
+        PlayButtonSound();
+        Time.timeScale = 0;
+        pauseMenu.SetActive(true);
+    }
+    public void ClosePauseMenu()
+    {
+        PlayButtonSound();
+        Time.timeScale = 1;
+        pauseMenu.SetActive(false);
+    }
     public void BonusHasBeenSpawned()
     {
         if( player == null) player = GameObject.Find("Player");
