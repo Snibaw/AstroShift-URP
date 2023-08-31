@@ -86,6 +86,7 @@ public class AttackRangePlayer : MonoBehaviour
     {
         yield return new WaitForSeconds(0.25f);
 
+        Debug.Log(objectParentCollidedWith.name);
         objectParentCollidedWith.transform.GetChild(0).gameObject.GetComponent<SpikeObstacleSpawnCoin>().CheckIfBonus();
 
         GameObject.Find("GameManager").GetComponent<GameManager>().DoAnimationSuspendedWall(objectParentCollidedWith);

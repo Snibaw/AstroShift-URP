@@ -30,9 +30,6 @@ public class BuyButtonBehaviour : MonoBehaviour
         augmentText = transform.GetChild(2).GetComponent<TMP_Text>();   
 
         UpdateValuesAndText();
-
-        SetPlayerPrefsIfNotExists();
-        
     }
     private void UpdateValuesAndText()
     {
@@ -84,7 +81,7 @@ public class BuyButtonBehaviour : MonoBehaviour
         priceText.text = price.ToString();
     }
 
-    private void SetPlayerPrefsIfNotExists()
+    public void SetPlayerPrefsIfNotExists()
     {
         if(!PlayerPrefs.HasKey(playerPrefBaseName + "Price"))
         {
@@ -94,6 +91,7 @@ public class BuyButtonBehaviour : MonoBehaviour
             PlayerPrefs.SetFloat(playerPrefBaseName + "Value", actualValueBV);
             PlayerPrefs.SetFloat(playerPrefBaseName + "ValueAddition", valueAdditionBV);
             PlayerPrefs.SetFloat(playerPrefBaseName + "ValueAugment", valueAugmentBV);
+            Debug.Log("PlayerPrefs for " + playerPrefBaseName + " have been set" + "actualValue"+ actualValueBV);
         }
     }
 

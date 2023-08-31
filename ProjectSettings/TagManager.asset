@@ -14,6 +14,7 @@ TagManager:
   - ScoreMultiplier
   - Laser
   - AudioManager
+  - BuyButton
   layers:
   - Default
   - TransparentFX
