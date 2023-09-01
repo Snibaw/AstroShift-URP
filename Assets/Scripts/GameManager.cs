@@ -5,6 +5,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private GameObject missionMenu;
     [SerializeField] private int maxScoreMultiplier = 30;
     [SerializeField] private GameObject highScoreFlagPrefab;
     [SerializeField] private GameObject[] removeWhenStart;
@@ -60,6 +61,7 @@ public class GameManager : MonoBehaviour
         // Camera.main.aspect = 960/640f;
 
         pauseMenu.SetActive(false);
+        missionMenu.SetActive(false);
         player = GameObject.Find("Player");
         startSpeed = player.GetComponent<PlayerMovement>().speed;
         player.GetComponent<PlayerMovement>().canMove = false;
@@ -155,6 +157,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         pauseMenu.SetActive(false);
     }
+
     public void BonusHasBeenSpawned()
     {
         if( player == null) player = GameObject.Find("Player");
@@ -203,11 +206,16 @@ public class GameManager : MonoBehaviour
             obj.SetActive(true);
         }
         PlayerPrefs.SetString("Coin", (long.Parse(PlayerPrefs.GetString("Coin", "0")) + Mathf.Ceil(coin*PlayerPrefs.GetFloat("IT_MoneyMultiplierValue"))).ToString());
+
+        PlayerPrefs.SetInt("M_PlayValue", PlayerPrefs.GetInt("M_PlayValue", 0) + 1);
+        PlayerPrefs.SetInt("M_ScoreValue", PlayerPrefs.GetInt("M_ScoreValue", 0) + int.Parse(scoreText.text));
     }
     public void EarnCoin(int coinValue = 1)
     {
         coin += coinValue;
         coinText.text = coin.ToString();
+
+        PlayerPrefs.SetInt("M_CoinValue", PlayerPrefs.GetInt("M_CoinValue", 0) + coinValue);
     }
     public void StartGame()
     {
@@ -253,6 +261,7 @@ public class GameManager : MonoBehaviour
     {
         if(scoreMultiplier >= maxScoreMultiplier) return;
         StartCoroutine(AddScoreMultiplier());
+        PlayerPrefs.SetInt("M_FreeValue", PlayerPrefs.GetInt("M_FreeValue", 0) + 1);
     }
     private IEnumerator AddScoreMultiplier()
     {
@@ -283,6 +292,8 @@ public class GameManager : MonoBehaviour
         //Add bonus in boolean to avoid death when hit
         if(bonusIndex == 0) isShieldOnceActive = true;
         else if(bonusIndex == 1) isShieldTimeActive = true;
+
+        PlayerPrefs.SetInt("M_BonusValue", PlayerPrefs.GetInt("M_BonusValue", 0) + 1);
     }
     public void DesactivateShieldBonus(int bonusIndex)
     {
@@ -295,6 +306,7 @@ public class GameManager : MonoBehaviour
         GameObject[] chainObstacles = GameObject.FindGameObjectsWithTag("Chain");
         foreach(GameObject obstacle in chainObstacles)
         {
+            
             DoAnimationSuspendedWall(obstacle.transform.parent.gameObject, giveBonus: true);
         }
 
@@ -424,12 +436,26 @@ public class GameManager : MonoBehaviour
     {
         PlayButtonSound();
         shopPannel.GetComponent<Animator>().SetTrigger("Close");
-        StartCoroutine(DesactiveShopPannelAfterAnimation());
+        StartCoroutine(DesactiveShopPannelAfterAnimation(shopPannel, 0.75f));
     }
-    private IEnumerator DesactiveShopPannelAfterAnimation()
+    public void ShowMissionMenu()
     {
-        yield return new WaitForSeconds(0.75f);
-        shopPannel.SetActive(false);
+        PlayButtonSound();
+
+        missionMenu.SetActive(true);
+        missionMenu.GetComponent<Animator>().SetTrigger("Open");
+    }
+    public void CloseMissionMenu()
+    {
+        PlayButtonSound();
+        missionMenu.GetComponent<Animator>().SetTrigger("Close");
+        StartCoroutine(DesactiveShopPannelAfterAnimation(missionMenu, 0.75f));
+
+    }
+    private IEnumerator DesactiveShopPannelAfterAnimation(GameObject obj, float time)
+    {
+        yield return new WaitForSeconds(time);
+        obj.SetActive(false);
     }
     public void ShowContent(int i)
     {
@@ -446,6 +472,7 @@ public class GameManager : MonoBehaviour
         long totalCoin = long.Parse(coinText.text);
         if(totalCoin >= price)
         {
+            PlayerPrefs.SetInt("M_BuyUpgradeValue", PlayerPrefs.GetInt("M_BuyUpgradeValue", 0) + 1);
             totalCoin -= price;
             coinText.text = totalCoin.ToString();
             PlayerPrefs.SetString("Coin", totalCoin.ToString());

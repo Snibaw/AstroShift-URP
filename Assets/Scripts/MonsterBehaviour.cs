@@ -83,7 +83,7 @@ public class MonsterBehaviour : MonoBehaviour
     {
         if(isDead) return;
         isDead = true;
-        animator.SetTrigger("Die");
+        if(animator != null) animator.SetTrigger("Die");
         if(isJumpKill)
         {
             Instantiate(deathAnimationPrefab, transform.position, Quaternion.Euler(0, 0, 0));

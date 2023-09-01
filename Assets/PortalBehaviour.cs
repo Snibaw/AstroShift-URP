@@ -16,6 +16,7 @@ public class PortalBehaviour : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
+            PlayerPrefs.SetInt("M_ColorValue", PlayerPrefs.GetInt("M_ColorValue", 0) + 1);
             collision.gameObject.GetComponent<PlayerBonus>().TakePortal(color);
         }
     }

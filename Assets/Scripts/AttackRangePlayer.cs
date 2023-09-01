@@ -27,6 +27,7 @@ public class AttackRangePlayer : MonoBehaviour
             {
                 return;
             }
+            PlayerPrefs.SetInt("M_WallValue", PlayerPrefs.GetInt("M_WallValue", 0) + 1);
             objectParentCollidedWith = collision.gameObject.transform.parent.gameObject;
             playerAttack.Attack(collision.gameObject);
         }
@@ -36,6 +37,7 @@ public class AttackRangePlayer : MonoBehaviour
             {
                 return;
             }
+            PlayerPrefs.SetInt("M_DroneValue", PlayerPrefs.GetInt("M_DroneValue", 0) + 1);
             objectParentCollidedWith = collision.gameObject;
             playerAttack.Attack(collision.gameObject);
         }
@@ -45,6 +47,7 @@ public class AttackRangePlayer : MonoBehaviour
             {
                 return;
             }
+            PlayerPrefs.SetInt("M_MonsterValue", PlayerPrefs.GetInt("M_MonsterValue", 0) + 1);
             objectParentCollidedWith = collision.gameObject;
             playerAttack.Attack(collision.gameObject);
         }
