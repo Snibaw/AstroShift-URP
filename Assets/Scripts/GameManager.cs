@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float distanceBetweenBonus = 300f;
     [SerializeField] private GameObject quitPannel;
     [Header("Shop")]
+    [SerializeField] private GameObject shopScrollRect;
     [SerializeField] private GameObject shopPannel;
     [SerializeField] private GameObject[] shopContent;
     [SerializeField] private GameObject pauseMenu;
@@ -414,6 +415,8 @@ public class GameManager : MonoBehaviour
     public void OpenShopPannel()
     {
         PlayButtonSound();
+        
+
         shopPannel.SetActive(true);
         shopPannel.GetComponent<Animator>().SetTrigger("Open");
     }
@@ -436,6 +439,7 @@ public class GameManager : MonoBehaviour
             obj.SetActive(false);
         }
         shopContent[i].SetActive(true);
+        shopScrollRect.GetComponent<UnityEngine.UI.ScrollRect>().content = shopContent[i].GetComponent<RectTransform>();
     }
     public bool BuyUpgrade(long price)
     {
