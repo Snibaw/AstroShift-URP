@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -61,6 +62,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Sounds")]
     [SerializeField] private AudioClip clickButtonSound;
+
     void Start()
     {
         QualitySettings.vSyncCount = 0;
@@ -562,5 +564,10 @@ public class GameManager : MonoBehaviour
     {
         // Debug.Log("StartValue : " + PlayerPrefs.GetInt(key + "StartValue", 0) + " + Value : " + PlayerPrefs.GetInt(key + "Value", 0) + " >= MaxValue : " + PlayerPrefs.GetInt(key + "MaxValue", 0));
         return PlayerPrefs.GetInt(key + "StartValue", 0) + PlayerPrefs.GetInt(key + "Value", 0) >= PlayerPrefs.GetInt(key + "MaxValue", 0);
+    }
+    public void ReportABug()
+    {
+        PlayButtonSound();
+        Application.OpenURL("mailto:snibaw@gmail.com");
     }
 }
