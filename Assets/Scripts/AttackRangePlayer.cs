@@ -14,9 +14,11 @@ public class AttackRangePlayer : MonoBehaviour
     [SerializeField] private float lightRangeTime;
     [SerializeField] private float timeBtwOnOff;
     [SerializeField] private float offRatioMultiplier;
+    private GameManager gameManager;
 
     private void Start() {
         playerAttack = GetComponentInParent<PlayerAttack>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -27,7 +29,7 @@ public class AttackRangePlayer : MonoBehaviour
             {
                 return;
             }
-            PlayerPrefs.SetInt("M_WallValue", PlayerPrefs.GetInt("M_WallValue", 0) + 1);
+            gameManager.AddValueToPlayerPrefs("M_Wall",1);
             objectParentCollidedWith = collision.gameObject.transform.parent.gameObject;
             playerAttack.Attack(collision.gameObject);
         }
@@ -37,7 +39,7 @@ public class AttackRangePlayer : MonoBehaviour
             {
                 return;
             }
-            PlayerPrefs.SetInt("M_DroneValue", PlayerPrefs.GetInt("M_DroneValue", 0) + 1);
+            gameManager.AddValueToPlayerPrefs("M_Drone",1);
             objectParentCollidedWith = collision.gameObject;
             playerAttack.Attack(collision.gameObject);
         }
@@ -47,7 +49,7 @@ public class AttackRangePlayer : MonoBehaviour
             {
                 return;
             }
-            PlayerPrefs.SetInt("M_MonsterValue", PlayerPrefs.GetInt("M_MonsterValue", 0) + 1);
+            gameManager.AddValueToPlayerPrefs("M_Monster",1);
             objectParentCollidedWith = collision.gameObject;
             playerAttack.Attack(collision.gameObject);
         }

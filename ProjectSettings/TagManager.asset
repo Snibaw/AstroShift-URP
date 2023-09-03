@@ -15,6 +15,7 @@ TagManager:
   - Laser
   - AudioManager
   - BuyButton
+  - Mission
   layers:
   - Default
   - TransparentFX

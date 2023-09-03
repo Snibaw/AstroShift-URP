@@ -5,7 +5,15 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("ShowWhenMissionFinished")]
+    [SerializeField] private GameObject redDot;
+    private GameObject[] missions;
+    [SerializeField] private GameObject ShowWhenMissionFinished;
     [SerializeField] private GameObject missionMenu;
+    private int testIndex = 0;
+    private bool isMissionShown = false;
+
+    [Header("Gameplay")]
     [SerializeField] private int maxScoreMultiplier = 30;
     [SerializeField] private GameObject highScoreFlagPrefab;
     [SerializeField] private GameObject[] removeWhenStart;
@@ -59,6 +67,19 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
         Screen.SetResolution(1280,720,true);
         // Camera.main.aspect = 960/640f;
+
+        missions = GameObject.FindGameObjectsWithTag("Mission");
+
+        redDot.SetActive(false);
+        foreach(GameObject mission in missions)
+        {
+            if(CheckIfMissionIsFinished(mission.name))
+            {
+                redDot.SetActive(true);
+                break;
+            }
+        }
+
 
         pauseMenu.SetActive(false);
         missionMenu.SetActive(false);
@@ -139,8 +160,10 @@ public class GameManager : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.C))
             {
-                PlayerPrefs.SetString("Coin", (long.Parse(PlayerPrefs.GetString("Coin", "0")) + 10000000).ToString());
-                coinText.text = PlayerPrefs.GetString("Coin", "0");
+                // PlayerPrefs.SetString("Coin", (long.Parse(PlayerPrefs.GetString("Coin", "0")) + 10000000).ToString());
+                // coinText.text = PlayerPrefs.GetString("Coin", "0");
+                TestingMissions(missions[testIndex]);
+                testIndex++;
             }
         }
 
@@ -207,15 +230,15 @@ public class GameManager : MonoBehaviour
         }
         PlayerPrefs.SetString("Coin", (long.Parse(PlayerPrefs.GetString("Coin", "0")) + Mathf.Ceil(coin*PlayerPrefs.GetFloat("IT_MoneyMultiplierValue"))).ToString());
 
-        PlayerPrefs.SetInt("M_PlayValue", PlayerPrefs.GetInt("M_PlayValue", 0) + 1);
-        PlayerPrefs.SetInt("M_ScoreValue", PlayerPrefs.GetInt("M_ScoreValue", 0) + int.Parse(scoreText.text));
+        AddValueToPlayerPrefs("M_Play", 1);
+        AddValueToPlayerPrefs("M_Score", int.Parse(scoreText.text));
     }
     public void EarnCoin(int coinValue = 1)
     {
         coin += coinValue;
         coinText.text = coin.ToString();
 
-        PlayerPrefs.SetInt("M_CoinValue", PlayerPrefs.GetInt("M_CoinValue", 0) + coinValue);
+        AddValueToPlayerPrefs("M_Coin", coinValue);
     }
     public void StartGame()
     {
@@ -261,7 +284,7 @@ public class GameManager : MonoBehaviour
     {
         if(scoreMultiplier >= maxScoreMultiplier) return;
         StartCoroutine(AddScoreMultiplier());
-        PlayerPrefs.SetInt("M_FreeValue", PlayerPrefs.GetInt("M_FreeValue", 0) + 1);
+        AddValueToPlayerPrefs("M_Free", 1);
     }
     private IEnumerator AddScoreMultiplier()
     {
@@ -293,7 +316,7 @@ public class GameManager : MonoBehaviour
         if(bonusIndex == 0) isShieldOnceActive = true;
         else if(bonusIndex == 1) isShieldTimeActive = true;
 
-        PlayerPrefs.SetInt("M_BonusValue", PlayerPrefs.GetInt("M_BonusValue", 0) + 1);
+        AddValueToPlayerPrefs("M_Bonus", 1);
     }
     public void DesactivateShieldBonus(int bonusIndex)
     {
@@ -472,7 +495,7 @@ public class GameManager : MonoBehaviour
         long totalCoin = long.Parse(coinText.text);
         if(totalCoin >= price)
         {
-            PlayerPrefs.SetInt("M_BuyUpgradeValue", PlayerPrefs.GetInt("M_BuyUpgradeValue", 0) + 1);
+            AddValueToPlayerPrefs("M_BuyUpgrade", 1);
             totalCoin -= price;
             coinText.text = totalCoin.ToString();
             PlayerPrefs.SetString("Coin", totalCoin.ToString());
@@ -482,5 +505,62 @@ public class GameManager : MonoBehaviour
         {
             return false;
         }
+    }
+    public void AddValueToPlayerPrefs(string key, int value)
+    {
+        bool isAlreadyFinished = CheckIfMissionIsFinished(key);
+
+        PlayerPrefs.SetInt(key+"Value", PlayerPrefs.GetInt(key+"Value", 0) + value);
+
+        if(!isAlreadyFinished)
+        {
+            if(CheckIfMissionIsFinished(key))
+            {
+                redDot.SetActive(true);
+                foreach(GameObject mission in missions)
+                {
+                    if(mission.name == key)
+                    {
+                        if(isMissionShown)
+                            StartCoroutine(WaitBeforeSpawnMissionOnScreen(mission));
+                        else
+                            StartCoroutine(SpawnMissionOnScreen(mission));
+                    }
+                }
+            }
+        }
+    }
+    private void TestingMissions(GameObject mission)
+    {
+        if(isMissionShown)
+            StartCoroutine(WaitBeforeSpawnMissionOnScreen(mission));
+        else
+            StartCoroutine(SpawnMissionOnScreen(mission));
+    }
+    private IEnumerator WaitBeforeSpawnMissionOnScreen(GameObject mission)
+    {
+        while(isMissionShown)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        StartCoroutine(SpawnMissionOnScreen(mission));
+    }
+    private IEnumerator SpawnMissionOnScreen(GameObject mission)
+    {
+        isMissionShown = true;
+        GameObject missionObject = Instantiate(mission, ShowWhenMissionFinished.transform);
+        missionObject.transform.position += new Vector3(0,120,0);
+        missionObject.SetActive(true);
+        missionObject.transform.parent = ShowWhenMissionFinished.transform;
+        missionObject.transform.GetChild(3).GetComponent<UnityEngine.UI.Button>().enabled = false;
+        Destroy(missionObject,2.5f);
+        ShowWhenMissionFinished.GetComponent<Animator>().SetTrigger("Show");
+        yield return new WaitForSeconds(2.5f);
+        isMissionShown = false;
+    }
+    private bool CheckIfMissionIsFinished(string key)
+    {
+        // Debug.Log("StartValue : " + PlayerPrefs.GetInt(key + "StartValue", 0) + " + Value : " + PlayerPrefs.GetInt(key + "Value", 0) + " >= MaxValue : " + PlayerPrefs.GetInt(key + "MaxValue", 0));
+        return PlayerPrefs.GetInt(key + "StartValue", 0) + PlayerPrefs.GetInt(key + "Value", 0) >= PlayerPrefs.GetInt(key + "MaxValue", 0);
     }
 }

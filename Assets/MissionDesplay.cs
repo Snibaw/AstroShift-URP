@@ -24,10 +24,13 @@ public class MissionDesplay : MonoBehaviour
         UpdateTexts();
     }
     private void Update() {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Application.isEditor)
         {
-            PlayerPrefs.SetInt(missionTypeInput + "Value", PlayerPrefs.GetInt(missionTypeInput + "Value", 0) + 20);
-            UpdateTexts();
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                PlayerPrefs.SetInt(missionTypeInput + "Value", PlayerPrefs.GetInt(missionTypeInput + "Value", 0) + 20);
+                UpdateTexts();
+            }
         }
     }
     private void UpdateTexts()
@@ -49,6 +52,11 @@ public class MissionDesplay : MonoBehaviour
         {
             claimButton.interactable = true;
             star.GetComponent<Image>().color = Color.yellow;
+        }
+        else if(currentValue >= maxValue/2)
+        {
+            claimButton.interactable = false;
+            star.GetComponent<Image>().color = Color.white;
         }
         else
         {
@@ -79,5 +87,15 @@ public class MissionDesplay : MonoBehaviour
         PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins", 0) + coins);
 
         UpdateTexts();
+    }
+    public void SetPlayerPrefsIfNotExists()
+    {
+        if(!PlayerPrefs.HasKey(missionTypeInput + "MaxValue"))
+        {
+            PlayerPrefs.SetInt(missionTypeInput + "Level", 1);
+            PlayerPrefs.SetInt(missionTypeInput + "StartValue", 0);
+            PlayerPrefs.SetInt(missionTypeInput + "MaxValue", missionBaseValueInput);
+            PlayerPrefs.SetInt(missionTypeInput + "Coin", missionBaseCoinInput);
+        }
     }
 }
