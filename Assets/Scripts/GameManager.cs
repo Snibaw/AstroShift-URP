@@ -83,8 +83,6 @@ public class GameManager : MonoBehaviour
         }
 
 
-        pauseMenu.SetActive(false);
-        missionMenu.SetActive(false);
         player = GameObject.Find("Player");
         startSpeed = player.GetComponent<PlayerMovement>().speed;
         player.GetComponent<PlayerMovement>().canMove = false;
@@ -150,6 +148,9 @@ public class GameManager : MonoBehaviour
 
         ShowContent(0);
         shopPannel.SetActive(false);
+
+        pauseMenu.SetActive(false);
+        missionMenu.SetActive(false);
     }
     private void FixedUpdate() {
         if(isStarted) scoreText.text = (player.transform.position.x*(1+scoreMultiplier)).ToString("0") ;
@@ -230,7 +231,7 @@ public class GameManager : MonoBehaviour
         {
             obj.SetActive(true);
         }
-        PlayerPrefs.SetString("Coin", (long.Parse(PlayerPrefs.GetString("Coin", "0")) + Mathf.Ceil(coin*PlayerPrefs.GetFloat("IT_MoneyMultiplierValue"))).ToString());
+        PlayerPrefs.SetString("Coin", (long.Parse(PlayerPrefs.GetString("Coin", "0")) + Mathf.Ceil(coin*PlayerPrefs.GetFloat("IT_MoneyMultiplierValue",1f))).ToString());
 
         AddValueToPlayerPrefs("M_Play", 1);
         AddValueToPlayerPrefs("M_Score", int.Parse(scoreText.text));

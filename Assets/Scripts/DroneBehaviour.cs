@@ -101,6 +101,7 @@ public class DroneBehaviour : MonoBehaviour
             {
                 isStarting = false;
                 spriteGlow.GlowColor = glowColors[0];
+                if(isGold) spriteGlow.GlowColor = endGlowColorGold;
             }
             return;
         }
@@ -174,6 +175,7 @@ public class DroneBehaviour : MonoBehaviour
         isShooting = false;
         spriteGlow.GlowBrightness = glowBrightnessTempo;
         spriteGlow.GlowColor = glowColors[0];
+        if(isGold) spriteGlow.GlowColor = endGlowColorGold;
     }
     public void Shoot()
     {

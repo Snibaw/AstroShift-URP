@@ -38,6 +38,8 @@ public class HelpBehaviour : MonoBehaviour
             bg.SetActive(false);
         }
         index = (index+indexAddition)%helpBgObjects.Length;
+        if(index<0)
+            index = helpBgObjects.Length-1;
         helpBgObjects[index].SetActive(true);
     }
 }
